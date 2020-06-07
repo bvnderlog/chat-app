@@ -6,6 +6,7 @@ import 'regenerator-runtime/runtime';
 import '../assets/application.scss';
 
 // import faker from 'faker';
+// @ts-ignore
 import gon from 'gon';
 // import cookies from 'js-cookie';
 // import io from 'socket.io-client';
