@@ -1,6 +1,17 @@
+import React from 'react';
+
+
 const App = (props) => {
+    const { channels } = props;
     return (
-        <div className="col-5">Abc</div>
+        <ul>
+            {
+                channels.map((channel) => {
+                    const { name, id } = channel;
+                    return <li key={id}>{name}</li>;
+                })
+            }
+        </ul>
     );
 };
 

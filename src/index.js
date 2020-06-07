@@ -2,6 +2,7 @@
 
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+import React from 'react';
 import { render } from 'react-dom';
 import '../assets/application.scss';
 
@@ -20,13 +21,17 @@ console.log('it works!');
 console.log('gon', gon);
 
 const { channels, messages, currentChannelId } = gon;
-const mountNode = document.querySelector('.container');
 
-render(
-  <App
-    channels={channels}
-    messages={messages}
-    currentChannelId={currentChannelId}
-  />,
-  mountNode,
-);
+const run = (channels, messages, currentChannelId) => {
+  const mountNode = document.querySelector('.container');
+  render(
+    <App
+      channels={channels}
+      messages={messages}
+      currentChannelId={currentChannelId}
+    />,
+    mountNode,
+  );
+}
+
+run(channels, messages, currentChannelId);
