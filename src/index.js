@@ -24,7 +24,7 @@ const { channels, messages, currentChannelId } = gon;
 
 const run = (channels, messages, currentChannelId) => {
   const mountNode = document.querySelector('.container');
-  render(
+  render( 
     <App
       channels={channels}
       messages={messages}

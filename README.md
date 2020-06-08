@@ -1,6 +1,9 @@
 # Chat app
 Simple real-time Slack equivalent.
 
+## Visit
+https://young-crag-16916.herokuapp.com/
+
 ### Requirements
 
 * [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
