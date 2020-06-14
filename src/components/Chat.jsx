@@ -7,16 +7,17 @@ export default class Chat extends React.Component {
     }
 
     render() {
+        const { messages } = this.props;
         return (
             <div className="col h-100">
                 <div className="d-flex flex-column h-100">
                     <div id="messages-box" className="chat-messages overflow-auto mb-3">
-                        <div>
-                            <b>Magnolia_Johns5</b>: 123
-                        </div>
-                        <div>
-                            <b>Adonis42</b>: Привет
-                        </div>
+                        {
+                            messages.map((message) => {
+                                const { username, content } = message;
+                                return <div><b>{username}</b>: {content}</div>;
+                            })
+                        }
                     </div>
                     <div className="mt-auto">
                         <form noValidate="" className="">
