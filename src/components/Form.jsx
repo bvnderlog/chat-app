@@ -11,11 +11,17 @@ export default class Form extends React.Component {
         this.setState({ inputText: target.value });
     }
 
+    handleSubmit = (event) => {
+        event.preventDefault();
+        console.log('created message');
+        this.setState({ inputText: '' });
+    }
+
     render() {
         const { inputText } = this.state;
         return (
             <div className="mt-auto">
-                <form noValidate="" className="">
+                <form onSubmit={this.handleSubmit} noValidate="" className="">
                     <div className="form-group">
                         <div className="input-group">
                             <input
