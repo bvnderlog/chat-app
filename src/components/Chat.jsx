@@ -1,11 +1,8 @@
 import React from 'react';
+import Form from './Form.jsx';
 
 
 export default class Chat extends React.Component {
-    handleChange = () => {
-        console.log('changed input');
-    }
-
     render() {
         const { messages } = this.props;
         return (
@@ -19,16 +16,7 @@ export default class Chat extends React.Component {
                             })
                         }
                     </div>
-                    <div className="mt-auto">
-                        <form noValidate="" className="">
-                            <div className="form-group">
-                                <div className="input-group">
-                                    <input onChange={this.handleChange} name="body" className="form-control" value="" />
-                                    <div className="d-block invalid-feedback">&nbsp;</div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                    <Form />
                 </div>
             </div>
         );
