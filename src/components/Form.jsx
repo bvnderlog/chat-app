@@ -1,4 +1,7 @@
 import React from 'react';
+import routes from '../routes.js';
+import axios from 'axios';
+import _ from 'lodash';
 
 
 export default class Form extends React.Component {
@@ -13,7 +16,23 @@ export default class Form extends React.Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        console.log('created message');
+
+        const { currentChannelId } = this.props;
+        const { channelMessagesPath } = routes;
+
+        const url = channelMessagesPath(currentChannelId);
+        const data = {
+            attributes: {
+                id: _.uniqueId(),
+                channelId: currentChannelId,
+                username: 'badcookie',
+                content: event.target.value,
+            }
+        }
+        console.log(data);
+        const response = axios.post(url, data);
+        console.log(response.data);
+
         this.setState({ inputText: '' });
     }
 

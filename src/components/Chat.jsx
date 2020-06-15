@@ -4,7 +4,7 @@ import Form from './Form.jsx';
 
 export default class Chat extends React.Component {
     render() {
-        const { messages } = this.props;
+        const { messages, currentChannelId } = this.props;
         return (
             <div className="col h-100">
                 <div className="d-flex flex-column h-100">
@@ -16,7 +16,7 @@ export default class Chat extends React.Component {
                             })
                         }
                     </div>
-                    <Form />
+                    <Form currentChannelId={currentChannelId} />
                 </div>
             </div>
         );
