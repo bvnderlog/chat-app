@@ -2,10 +2,13 @@ import React from 'react';
 import Channels from './Channels.jsx';
 import Chat from './Chat.jsx';
 import routes from '../routes.js';
+import UserContext from './context.js';
 import axios from 'axios';
 
 
 export default class App extends React.Component {
+    static contextType = UserContext;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -16,15 +19,15 @@ export default class App extends React.Component {
         };
     }
 
-    onChannelClick = (channelId) => () => {
+    handleChannelClick = (channelId) => () => {
         this.setState({ currentChannelId: channelId });
     }
 
-    onFormChange = ({ target }) => {
+    handleFormChange = ({ target }) => {
         this.setState({ inputText: target.value });
     }
 
-    onFormSubmit = async (event) => {
+    handleFormSubmit = async (event) => {
         event.preventDefault();
     
         const { currentChannelId } = this.state;
@@ -34,7 +37,7 @@ export default class App extends React.Component {
         const data = {
             attributes: {
                 channelId: currentChannelId,
-                username: 'badcookie',
+                username: this.context,
                 content: this.state.inputText,
             }
         }
@@ -60,14 +63,14 @@ export default class App extends React.Component {
                     <Channels
                         channels={channels}
                         currentChannelId={currentChannelId}
-                        onChannelClick={this.onChannelClick}
+                        onChannelClick={this.handleChannelClick}
                     />
                     <Chat
                         messages={activeMessages}
                         currentChannelId={currentChannelId}
                         inputText={inputText}
-                        onFormChange={this.onFormChange}
-                        onFormSubmit={this.onFormSubmit}
+                        onFormChange={this.handleFormChange}
+                        onFormSubmit={this.handleFormSubmit}
                     />
                 </div>
             </div>

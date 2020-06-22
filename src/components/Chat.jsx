@@ -1,7 +1,10 @@
 import React from 'react';
+import UserContext from './context.js';
 
 
 export default class Chat extends React.Component {
+    static contextType = UserContext;
+
     renderForm() {
         const { inputText, onFormSubmit, onFormChange } = this.props;
         return (
