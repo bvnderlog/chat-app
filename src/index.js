@@ -13,7 +13,7 @@ import io from 'socket.io-client';
 import { configureStore } from '@reduxjs/toolkit';
 import App from './components/App.jsx';
 import UserContext from './components/context.js';
-import slice from './slice.js';
+import reducer, { actions } from './slice.js';
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -30,11 +30,11 @@ if (!username) {
     cookies.set('username', faker.internet.userName());
 }
 
-const { reducer, actions } = slice;
+
 const store = configureStore({ reducer });
 
-// const socket = io();
-// socket.on('newMessage', (data) => store.dispatch(actions.addMessage(data)));
+const socket = io();
+socket.on('newMessage', (data) => store.dispatch(actions.addMessage(data)));
 
 
 const run = (channels, messages, currentChannelId) => {
