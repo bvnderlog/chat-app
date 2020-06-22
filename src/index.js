@@ -9,9 +9,11 @@ import faker from 'faker';
 // @ts-ignore
 import gon from 'gon';
 import cookies from 'js-cookie';
-// import io from 'socket.io-client';
+import io from 'socket.io-client';
+import { configureStore } from '@reduxjs/toolkit';
 import App from './components/App.jsx';
 import UserContext from './components/context.js';
+import slice from './slice.js';
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -27,6 +29,13 @@ const username = cookies.get('username');
 if (!username) {
     cookies.set('username', faker.internet.userName());
 }
+
+const { reducer, actions } = slice;
+const store = configureStore({ reducer });
+
+// const socket = io();
+// socket.on('newMessage', (data) => store.dispatch(actions.addMessage(data)));
+
 
 const run = (channels, messages, currentChannelId) => {
   const mountNode = document.querySelector('.container');
