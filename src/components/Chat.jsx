@@ -1,8 +1,15 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import UserContext from './context.js';
 
 
-export default class Chat extends React.Component {
+const mapStateToProps = (state) => {
+    const { messages, currentChannelId } = state;
+    const activeChannelMessages = messages.filter(({ channelId }) => channelId === currentChannelId);;
+    return { messages: activeChannelMessages };
+};
+
+class Chat extends React.Component {
     static contextType = UserContext;
 
     renderForm() {
@@ -45,3 +52,6 @@ export default class Chat extends React.Component {
         );
     }
 }
+
+
+export default connect(mapStateToProps)(Chat);

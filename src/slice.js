@@ -5,7 +5,7 @@ const { reducer, actions } = createSlice({
     name: 'messages',
     initialState: [],
     reducers: {
-        add: (state, action) => state.push(action.payload.message),
+        addMessage: (state, action) => state.push(action.payload.data.attributes),
     },
 });
 

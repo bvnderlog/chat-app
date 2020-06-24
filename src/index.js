@@ -4,6 +4,7 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import React from 'react';
 import { render } from 'react-dom';
+import { Provider } from 'react-redux';
 import '../assets/application.scss';
 import faker from 'faker';
 // @ts-ignore
@@ -13,7 +14,7 @@ import io from 'socket.io-client';
 import { configureStore } from '@reduxjs/toolkit';
 import App from './components/App.jsx';
 import UserContext from './components/context.js';
-import reducer, { actions } from './slice.js';
+import messagesReducer, { actions } from './slice.js';
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -31,7 +32,13 @@ if (!username) {
 }
 
 
-const store = configureStore({ reducer });
+const preloadedState = { messages };
+const store = configureStore({
+  preloadedState,
+  reducer: {
+    messages: messagesReducer,
+  }
+});
 
 const socket = io();
 socket.on('newMessage', (data) => store.dispatch(actions.addMessage(data)));
@@ -41,13 +48,15 @@ const run = (channels, messages, currentChannelId) => {
   const mountNode = document.querySelector('.container');
   const username = cookies.get('username');
   render( 
-    <UserContext.Provider value={username}>
-      <App
-        channels={channels}
-        messages={messages}
-        currentChannelId={currentChannelId}
-      />
-    </UserContext.Provider>,
+    <Provider store={store}>
+      <UserContext.Provider value={username}>
+        <App
+          channels={channels}
+          messages={messages}
+          currentChannelId={currentChannelId}
+        />
+      </UserContext.Provider>
+    </Provider>,
     mountNode,
   );
 }
