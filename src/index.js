@@ -26,37 +26,28 @@ console.log('gon', gon);
 
 const { channels, messages, currentChannelId } = gon;
 
+const preloadedState = { channels, messages, currentChannelId };
+const store = configureStore({ preloadedState, reducer: reducers });
+
 const username = cookies.get('username');
 if (!username) {
     cookies.set('username', faker.internet.userName());
 }
 
-
-const preloadedState = { messages };
-const store = configureStore({
-  preloadedState,
-  reducer: reducers,
-});
-
 const socket = io();
 socket.on('newMessage', (data) => store.dispatch(actions.messages.addMessage(data)));
 
-
-const run = (channels, messages, currentChannelId) => {
+const run = (store) => {
   const mountNode = document.querySelector('.container');
   const username = cookies.get('username');
   render( 
     <Provider store={store}>
       <UserContext.Provider value={username}>
-        <App
-          channels={channels}
-          messages={messages}
-          currentChannelId={currentChannelId}
-        />
+        <App/>
       </UserContext.Provider>
     </Provider>,
     mountNode,
   );
 }
 
-run(channels, messages, currentChannelId);
+run(store);
