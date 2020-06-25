@@ -21,10 +21,6 @@ class App extends React.Component {
         this.state = {inputText: ''};
     }
 
-    handleChannelClick = (channelId) => () => {
-        this.setState({ currentChannelId: channelId });
-    }
-
     handleFormChange = ({ target }) => {
         this.setState({ inputText: target.value });
     }
@@ -43,8 +39,9 @@ class App extends React.Component {
                 content: this.state.inputText,
             }
         }
-
-        await axios.post(url, { data });   
+        
+        this.setState({ inputText: '' });
+        await axios.post(url, { data });
     }
 
     render() {
@@ -52,7 +49,7 @@ class App extends React.Component {
         return (
             <div className="h-100" id="chat">
                 <div className="row h-100 pb-3">
-                    <Channels onChannelClick={this.handleChannelClick} />
+                    <Channels />
                     <Chat
                         inputText={inputText}
                         onFormChange={this.handleFormChange}

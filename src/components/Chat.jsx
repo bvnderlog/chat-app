@@ -5,7 +5,9 @@ import UserContext from './context.js';
 
 const mapStateToProps = (state) => {
     const { messages, currentChannelId } = state;
-    const activeChannelMessages = messages.filter(({ channelId }) => channelId === currentChannelId);;
+    const activeChannelMessages = messages.filter(
+        ({ channelId }) => channelId === currentChannelId,
+    );
     return { messages: activeChannelMessages };
 };
 

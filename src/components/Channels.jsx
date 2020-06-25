@@ -18,38 +18,48 @@ class Channels extends React.Component {
         this.props.switchChannel(id);
     }
 
-    render() {
+    renderChannels() {
         const { channels, currentChannelId } = this.props;
+        if (channels.length === 0) {
+            return null;
+        }
+
+        const renderedChannels = channels.map((channel) => {
+            const { name, id } = channel;
+            const classes = cn({
+                btn: true,
+                "nav-link": true,
+                "btn-block": true,
+                "active": id === currentChannelId,
+                "shadow-none": true,
+            });
+            return (
+                <li key={id} className="nav-item">
+                    <button
+                        onClick={this.handleChannelClick(id)}
+                        type="button"
+                        className={classes}>
+                        {name}
+                    </button>
+                </li>
+            );
+        });
+
+        return (
+            <ul className="nav flex-column nav-pills nav-fill">
+                {renderedChannels}
+            </ul>
+        );
+    }
+
+    render() {
         return (
             <div className="col-3 border-right">
                 <div className="d-flex mb-2">
                     <span>Channels</span>
                     <button className="btn btn-link p-0 ml-auto">+</button>
                 </div>
-                <ul className="nav flex-column nav-pills nav-fill">
-                    {
-                        channels.map((channel) => {
-                            const { name, id } = channel;
-                            const classes = cn({
-                                btn: true,
-                                "nav-link": true,
-                                "btn-block": true,
-                                "active": id === currentChannelId,
-                                "shadow-none": true,
-                            });
-                            return (
-                                <li key={id} className="nav-item">
-                                    <button
-                                        onClick={this.handleChannelClick(id)}
-                                        type="button"
-                                        className={classes}>
-                                        {name}
-                                    </button>
-                                </li>
-                            );
-                        })
-                    }
-                </ul>
+                {this.renderChannels()}
             </div>
         );
     }
