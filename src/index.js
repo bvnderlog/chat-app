@@ -14,7 +14,7 @@ import io from 'socket.io-client';
 import { configureStore } from '@reduxjs/toolkit';
 import App from './components/App.jsx';
 import UserContext from './components/context.js';
-import messagesReducer, { actions } from './slice.js';
+import { reducers, actions } from './slices';
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -35,13 +35,11 @@ if (!username) {
 const preloadedState = { messages };
 const store = configureStore({
   preloadedState,
-  reducer: {
-    messages: messagesReducer,
-  }
+  reducer: reducers,
 });
 
 const socket = io();
-socket.on('newMessage', (data) => store.dispatch(actions.addMessage(data)));
+socket.on('newMessage', (data) => store.dispatch(actions.messages.addMessage(data)));
 
 
 const run = (channels, messages, currentChannelId) => {
