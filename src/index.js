@@ -12,13 +12,14 @@ import gon from 'gon';
 import cookies from 'js-cookie';
 import io from 'socket.io-client';
 import { configureStore } from '@reduxjs/toolkit';
+
 import App from './components/App.jsx';
-import UserContext from './components/context.js';
 import { reducers, actions } from './slices';
+import UserContext from './components/context';
 
 
 if (process.env.NODE_ENV !== 'production') {
-  localStorage.debug = 'chat:*';
+    localStorage.debug = 'chat:*';
 }
 
 console.log('it works!');
@@ -37,17 +38,17 @@ if (!username) {
 const socket = io();
 socket.on('newMessage', (data) => store.dispatch(actions.messages.addMessage(data)));
 
-const run = (store) => {
-  const mountNode = document.querySelector('.container');
-  const username = cookies.get('username');
-  render( 
-    <Provider store={store}>
-      <UserContext.Provider value={username}>
-        <App/>
-      </UserContext.Provider>
-    </Provider>,
-    mountNode,
-  );
-}
+const run = (state) => {
+    const mountNode = document.querySelector('.container');
+    const username = cookies.get('username');
+    render(
+        <Provider store={state}>
+            <UserContext.Provider value={username}>
+                <App/>
+            </UserContext.Provider>
+        </Provider>,
+        mountNode,
+    );
+};
 
 run(store);
