@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -16,11 +16,16 @@ const renderMessage = (message) => {
     return <div key={id}><b>{username}</b>: {content}</div>;
 };
 
-const Messages = (props) => (
-    <div id="messages-box" className="chat-messages overflow-auto mb-3">
-        {props.messages.map(renderMessage)}
-    </div>
-);
+const Messages = (props) => {
+    const scrollAnchor = useRef(null);
+    useEffect(() => scrollAnchor.current.scrollIntoView({ behavior: 'smooth' }));
+    return (
+        <div id="messages-box" className="chat-messages overflow-auto mb-3">
+            {props.messages.map(renderMessage)}
+            <div ref={scrollAnchor} />
+        </div>
+    );
+};
 
 Messages.propTypes = { messages: PropTypes.array };
 
