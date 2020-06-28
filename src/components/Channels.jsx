@@ -12,8 +12,8 @@ const mapStateToProps = (state) => {
 
 const actions = { switchChannel: allActions.currentChannelId.switchChannel };
 
-
-class Channels extends React.Component {
+@connect(mapStateToProps, actions)
+export default class Channels extends React.Component {
     handleChannelClick = (id) => () => {
         this.props.switchChannel(id);
     }
@@ -54,16 +54,13 @@ class Channels extends React.Component {
 
     render() {
         return (
-            <div className="col-3 border-right">
+            <>
                 <div className="d-flex mb-2">
                     <span>Channels</span>
                     <button className="btn btn-link p-0 ml-auto">+</button>
                 </div>
                 {this.renderChannels()}
-            </div>
+            </>
         );
     }
 }
-
-
-export default connect(mapStateToProps, actions)(Channels);

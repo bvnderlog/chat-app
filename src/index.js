@@ -15,7 +15,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import App from './components/App.jsx';
 import { reducers, actions } from './slices';
-import UserContext from './components/context';
+import UserContext from './context.js';
 
 
 if (process.env.NODE_ENV !== 'production') {

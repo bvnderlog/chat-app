@@ -4,18 +4,16 @@ import { Formik } from 'formik';
 import { connect } from 'react-redux';
 
 import routes from '../routes.js';
-import UserContext from './context.js';
+import UserContext from '../context.js';
 
 
 const mapStateToProps = (state) => {
-    const { messages, currentChannelId } = state;
-    const activeChannelMessages = messages.filter(
-        ({ channelId }) => channelId === currentChannelId,
-    );
-    return { messages: activeChannelMessages, currentChannelId };
+    const { currentChannelId } = state;
+    return { currentChannelId };
 };
 
-class Chat extends React.Component {
+@connect(mapStateToProps)
+export default class Form extends React.Component {
     static contextType = UserContext;
 
     handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -37,7 +35,7 @@ class Chat extends React.Component {
         await axios.post(url, { data });
     }
 
-    renderForm() {
+    render() {
         return (
             <Formik
                 initialValues={{ body: '' }}
@@ -62,26 +60,4 @@ class Chat extends React.Component {
             </Formik>
         );
     }
-
-    render() {
-        const { messages } = this.props;
-        return (
-            <div className="col h-100">
-                <div className="d-flex flex-column h-100">
-                    <div id="messages-box" className="chat-messages overflow-auto mb-3">
-                        {
-                            messages.map((message) => {
-                                const { username, content, id } = message;
-                                return <div key={id}><b>{username}</b>: {content}</div>;
-                            })
-                        }
-                    </div>
-                    {this.renderForm()}
-                </div>
-            </div>
-        );
-    }
 }
-
-
-export default connect(mapStateToProps)(Chat);
