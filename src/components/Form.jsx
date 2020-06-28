@@ -1,10 +1,11 @@
 import React from 'react';
 import axios from 'axios';
 import { Formik } from 'formik';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import routes from '../routes.js';
-import UserContext from '../context.js';
+import routes from '../routes';
+import UserContext from '../context';
 
 
 const mapStateToProps = (state) => {
@@ -13,7 +14,7 @@ const mapStateToProps = (state) => {
 };
 
 @connect(mapStateToProps)
-export default class Form extends React.Component {
+class Form extends React.Component {
     static contextType = UserContext;
 
     handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -29,7 +30,7 @@ export default class Form extends React.Component {
                 channelId: currentChannelId,
                 username: this.context,
                 content: values.body,
-            }
+            },
         };
 
         await axios.post(url, { data });
@@ -61,3 +62,7 @@ export default class Form extends React.Component {
         );
     }
 }
+
+Form.propTypes = { currentChannelId: PropTypes.number };
+
+export default Form;

@@ -8,14 +8,16 @@ import { Provider } from 'react-redux';
 import '../assets/application.scss';
 import faker from 'faker';
 // @ts-ignore
+// eslint-disable-next-line import/no-unresolved
 import gon from 'gon';
 import cookies from 'js-cookie';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import io from 'socket.io-client';
 import { configureStore } from '@reduxjs/toolkit';
 
 import App from './components/App.jsx';
 import { reducers, actions } from './slices';
-import UserContext from './context.js';
+import UserContext from './context';
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -30,20 +32,21 @@ const { channels, messages, currentChannelId } = gon;
 const preloadedState = { channels, messages, currentChannelId };
 const store = configureStore({ preloadedState, reducer: reducers });
 
-const username = cookies.get('username');
-if (!username) {
-    cookies.set('username', faker.internet.userName());
+if (!cookies.get('username')) {
+    const newUsername = faker.internet.userName();
+    cookies.set('username', newUsername, { sameSite: 'strict' });
 }
 
 const socket = io();
 socket.on('newMessage', (data) => store.dispatch(actions.messages.addMessage(data)));
 
-const run = (state) => {
-    const mountNode = document.querySelector('.container');
-    const username = cookies.get('username');
+const username = cookies.get('username');
+const node = document.querySelector('.container');
+
+const run = (state, mountNode, user) => {
     render(
         <Provider store={state}>
-            <UserContext.Provider value={username}>
+            <UserContext.Provider value={user}>
                 <App/>
             </UserContext.Provider>
         </Provider>,
@@ -51,4 +54,4 @@ const run = (state) => {
     );
 };
 
-run(store);
+run(store, node, username);

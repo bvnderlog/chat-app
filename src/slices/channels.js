@@ -12,7 +12,7 @@ const channelsSlice = createSlice({
         removeChannel(state, action) {
             const channelId = action.payload;
             return state.filter((channel) => channel.id !== channelId);
-        }
+        },
     },
 });
 

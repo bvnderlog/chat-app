@@ -1,6 +1,6 @@
-import channelsReducer, { actions as channelsActions } from './channels.js';
-import messagesReducer, { actions as messagesActions } from './messages.js';
-import currentChannelReducer, { actions as currentChannelActions } from './currentChannel.js';
+import channelsReducer, { actions as channelsActions } from './channels';
+import messagesReducer, { actions as messagesActions } from './messages';
+import currentChannelReducer, { actions as currentChannelActions } from './currentChannel';
 
 const reducers = {
     channels: channelsReducer,
