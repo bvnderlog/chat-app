@@ -13,7 +13,6 @@ jobs:
           CI: true
       - name: Run linter
         run: make lint
-
       - name: Check code coverage
         uses: paambaati/codeclimate-action@v2.4.0
         env:
