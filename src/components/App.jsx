@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Form from './Form.jsx';
-import Messages from './Messages.jsx';
-import Channels from './Channels.jsx';
+import Form from './Form';
+import Messages from './Messages';
+import Channels from './Channels';
 
 
 const App = () => (

@@ -22,4 +22,6 @@ rules:
 settings:
     react:
         version: 'detect'
-    import/resolver: 'webpack'
+    import/resolver:
+        - node
+        - webpack
