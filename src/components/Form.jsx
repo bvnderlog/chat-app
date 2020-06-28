@@ -7,27 +7,24 @@ import { Formik, Form as FormikForm, Field } from 'formik';
 
 import routes from '../routes';
 import UserContext from '../context';
+import { actions as allActions } from '../slices';
 
 
 const mapStateToProps = (state) => {
-    const { currentChannelId } = state;
-    return { currentChannelId };
+    const { currentChannelId, networkError } = state;
+    return { currentChannelId, networkError };
 };
 
-@connect(mapStateToProps)
+const actions = { setHasNetworkError: allActions.network.setHasNetworkError };
+
+@connect(mapStateToProps, actions)
 class Form extends React.Component {
     static contextType = UserContext;
 
-    constructor(props) {
-        super(props);
-        this.state = { hasNetworkError: false };
-    }
-
     handleSubmit = async (values, { setSubmitting, resetForm }) => {
         setSubmitting(false);
-        resetForm();
 
-        const { currentChannelId } = this.props;
+        const { currentChannelId, networkError, setHasNetworkError } = this.props;
         const { channelMessagesPath } = routes;
 
         const url = channelMessagesPath(currentChannelId);
@@ -39,26 +36,31 @@ class Form extends React.Component {
             },
         };
 
-        await axios.post(url, { data });
+        try {
+            await axios.post(url, { data });
+        } catch (error) {
+            setHasNetworkError(true);
+            return;
+        }
+
+        resetForm();
+        if (networkError) {
+            setHasNetworkError(false);
+        }
     }
 
-    validate = () => (this.state.hasNetworkError ? { body: 'Network error' } : {});
-
     render() {
+        const { networkError } = this.props;
         return (
             <Formik
                 initialValues={{ body: '' }}
                 onSubmit={this.handleSubmit}
-                validateOnChange={false}
-                validateOnBlur={false}
-                validate={this.validate}
             >
                 {
-                    ({ errors, touched }) => {
-                        const errorExists = errors.body && touched.body;
+                    () => {
                         const inputClasses = cn({
                             'form-control': true,
-                            'is-invalid': errorExists,
+                            'is-invalid': networkError,
                         });
                         return (
                             <div className="mt-auto">
@@ -67,7 +69,7 @@ class Form extends React.Component {
                                         <div className="input-group">
                                             <Field name="body" className={inputClasses} />
                                             <div className="d-block invalid-feedback">
-                                                {errorExists && errors.body}
+                                                {networkError && 'Network error'}
                                                 &nbsp;
                                             </div>
                                         </div>
@@ -82,6 +84,10 @@ class Form extends React.Component {
     }
 }
 
-Form.propTypes = { currentChannelId: PropTypes.number };
+Form.propTypes = {
+    networkError: PropTypes.bool,
+    currentChannelId: PropTypes.number,
+    setHasNetworkError: PropTypes.func,
+};
 
 export default Form;

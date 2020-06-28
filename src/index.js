@@ -28,7 +28,12 @@ console.log('gon', gon);
 
 const { channels, messages, currentChannelId } = gon;
 
-const preloadedState = { channels, messages, currentChannelId };
+const preloadedState = {
+    channels,
+    messages,
+    currentChannelId,
+    networkError: false,
+};
 const store = configureStore({ preloadedState, reducer: reducers });
 
 if (!cookies.get('username')) {
@@ -46,7 +51,7 @@ const run = (state, mountNode, user) => {
     render(
         <Provider store={state}>
             <UserContext.Provider value={user}>
-                <App/>
+                <App />
             </UserContext.Provider>
         </Provider>,
         mountNode,
