@@ -13,7 +13,7 @@ const channelsSlice = createSlice({
             const channelId = action.payload;
             return state.filter((channel) => channel.id !== channelId);
         },
-    }
+    },
 });
 
 const { reducer, actions } = channelsSlice;
