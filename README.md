@@ -1,4 +1,4 @@
-# Chat app
+# Chat App
 Simple real-time Slack equivalent.
 
 ![Lint](https://github.com/badcookie/chat-app/workflows/Build/badge.svg)
