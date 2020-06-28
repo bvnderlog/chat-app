@@ -8,14 +8,13 @@ import { Provider } from 'react-redux';
 import '../assets/application.scss';
 import faker from 'faker';
 // @ts-ignore
-// eslint-disable-next-line import/no-unresolved
 import gon from 'gon';
 import cookies from 'js-cookie';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import io from 'socket.io-client';
 import { configureStore } from '@reduxjs/toolkit';
 
-import App from './components/App.jsx';
+import App from './components/App';
 import { reducers, actions } from './slices';
 import UserContext from './context';
 

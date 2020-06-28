@@ -20,9 +20,7 @@ class Form extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            hasNetworkError: false,
-        };
+        this.state = { hasNetworkError: false };
     }
 
     handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -41,10 +39,7 @@ class Form extends React.Component {
             },
         };
 
-        const response = await axios.post(url, { data });
-        if (response.status !== 200) {
-            this.setState({ hasNetworkError: true });
-        }
+        await axios.post(url, { data });
     }
 
     validate = () => (this.state.hasNetworkError ? { body: 'Network error' } : {});
