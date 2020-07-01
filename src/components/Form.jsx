@@ -15,7 +15,8 @@ const mapStateToProps = (state) => {
     return { currentChannelId, networkError };
 };
 
-const actions = { setHasNetworkError: allActions.network.setHasNetworkError };
+const { setHasNetworkError } = allActions.network;
+const actions = { setHasNetworkError };
 
 @connect(mapStateToProps, actions)
 class Form extends React.Component {
@@ -24,7 +25,7 @@ class Form extends React.Component {
     handleSubmit = async (values, { setSubmitting, resetForm }) => {
         setSubmitting(false);
 
-        const { currentChannelId, networkError, setHasNetworkError } = this.props;
+        const { currentChannelId, networkError } = this.props;
         const { channelMessagesPath } = routes;
 
         const url = channelMessagesPath(currentChannelId);
@@ -39,13 +40,13 @@ class Form extends React.Component {
         try {
             await axios.post(url, { data });
         } catch (error) {
-            setHasNetworkError(true);
+            this.props.setHasNetworkError(true);
             return;
         }
 
         resetForm();
         if (networkError) {
-            setHasNetworkError(false);
+            this.props.setHasNetworkError(false);
         }
     }
 

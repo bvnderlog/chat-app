@@ -33,6 +33,7 @@ const preloadedState = {
     messages,
     currentChannelId,
     networkError: false,
+    modalInfo: { channel: null, type: null },
 };
 const store = configureStore({ preloadedState, reducer: reducers });
 
@@ -43,6 +44,7 @@ if (!cookies.get('username')) {
 
 const socket = io();
 socket.on('newMessage', (data) => store.dispatch(actions.messages.addMessage(data)));
+socket.on('newChannel', (data) => store.dispatch(actions.channels.addChannel(data)));
 
 const username = cookies.get('username');
 const node = document.querySelector('.container');

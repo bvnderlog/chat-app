@@ -11,12 +11,16 @@ const mapStateToProps = (state) => {
     return { channels, currentChannelId };
 };
 
+const { hideModal, setModalInfo } = allActions.modalInfo;
 const { switchChannel } = allActions.currentChannelId;
-const actions = { switchChannel };
+const actions = { switchChannel, hideModal, setModalInfo };
+
 
 @connect(mapStateToProps, actions)
 class Channels extends React.Component {
-    handleChannelClick = (id) => () => this.props.switchChannel(id);
+    handleChannelSwitch = (id) => () => this.props.switchChannel(id);
+
+    handleChannelAdd = () => this.props.setModalInfo({ type: 'add' });
 
     renderChannels() {
         const { channels, currentChannelId } = this.props;
@@ -36,7 +40,7 @@ class Channels extends React.Component {
             return (
                 <li key={id} className="nav-item">
                     <button
-                        onClick={this.handleChannelClick(id)}
+                        onClick={this.handleChannelSwitch(id)}
                         type="button"
                         className={classes}>
                         {name}
@@ -57,7 +61,10 @@ class Channels extends React.Component {
             <>
                 <div className="d-flex mb-2">
                     <span>Channels</span>
-                    <button className="btn btn-link p-0 ml-auto">+</button>
+                    <button
+                        onClick={this.handleChannelAdd}
+                        className="btn btn-link p-0 ml-auto"
+                    >+</button>
                 </div>
                 {this.renderChannels()}
             </>
@@ -69,6 +76,7 @@ Channels.propTypes = {
     channels: PropTypes.array,
     currentChannelId: PropTypes.number,
     switchChannel: PropTypes.func,
+    setModalInfo: PropTypes.func,
 };
 
 export default Channels;
