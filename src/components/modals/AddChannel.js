@@ -1,8 +1,8 @@
 import axios from 'axios';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
 import { connect } from 'react-redux';
-import React, { useEffect, useRef } from 'react';
 import { Modal, FormGroup, FormControl } from 'react-bootstrap';
 
 import routes from '../../routes';
@@ -44,13 +44,8 @@ const AddChannel = (props) => {
         initialValues: { body: '' },
     });
 
-    const inputRef = useRef();
-    useEffect(() => {
-        inputRef.current.focus();
-    });
-
     return (
-        <Modal.Dialog>
+        <Modal show={props.modalInfo.type === 'add'} onHide={props.hideModal}>
             <Modal.Header closeButton onHide={props.hideModal}>
                 <Modal.Title>Add</Modal.Title>
             </Modal.Header>
@@ -60,7 +55,6 @@ const AddChannel = (props) => {
                     <FormGroup>
                         <FormControl
                             required
-                            ref={inputRef}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.body}
@@ -75,13 +69,15 @@ const AddChannel = (props) => {
                     <input type="submit" className="btn btn-primary" value="submit" />
                 </form>
             </Modal.Body>
-        </Modal.Dialog>
+        </Modal>
     );
 };
 
 AddChannel.propTypes = {
     hideModal: PropTypes.func,
+    setModalInfo: PropTypes.func,
     networkError: PropTypes.bool,
+    modalInfo: PropTypes.object,
 };
 
 export default connect(mapStateToProps, actions)(AddChannel);

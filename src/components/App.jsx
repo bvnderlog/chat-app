@@ -20,20 +20,22 @@ const renderModal = (modalInfo) => {
 };
 
 const App = (props) => (
-    <div className="h-100" id="chat">
-        <div className="row h-100 pb-3">
-            <div className="col-3 border-right">
-                <Channels />
-            </div>
-            <div className="col h-100">
-                <div className="d-flex flex-column h-100">
-                    <Messages />
-                    <Form />
+    <>
+        <div className="h-100" id="chat">
+            <div className="row h-100 pb-3">
+                <div className="col-3 border-right">
+                    <Channels />
+                </div>
+                <div className="col h-100">
+                    <div className="d-flex flex-column h-100">
+                        <Messages />
+                        <Form />
+                    </div>
                 </div>
             </div>
-            { renderModal(props.modalInfo) }
         </div>
-    </div>
+        { renderModal(props.modalInfo) }
+    </>
 );
 
 App.propTypes = { modalInfo: PropTypes.object };
