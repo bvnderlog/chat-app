@@ -57,7 +57,7 @@ const AddChannel = (props) => {
                 >
                     <Form>
                         <FormGroup>
-                            <Field required name="body" className={inputClasses}/>
+                            <Field required name="body" className={inputClasses} />
                             <div className="d-block invalid-feedback">
                                 {props.networkError && 'Network error'}
                                 &nbsp;

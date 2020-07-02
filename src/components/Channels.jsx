@@ -22,6 +22,21 @@ class Channels extends React.Component {
 
     handleChannelAdd = () => this.props.setModalInfo({ type: 'add' });
 
+    handleChannelRemove = (channel) => () => this.props.setModalInfo({ type: 'remove', channel });
+
+    showRemoveButton = (channel) => {
+        if (!channel.removable) {
+            return null;
+        }
+        return (
+            <button
+                type="button"
+                className="border-0 btn-link p-0"
+                onClick={this.handleChannelRemove(channel)}
+            >-</button>
+        );
+    }
+
     renderChannels() {
         const { channels, currentChannelId } = this.props;
         if (channels.length === 0) {
@@ -45,6 +60,7 @@ class Channels extends React.Component {
                         className={classes}>
                         {name}
                     </button>
+                    { this.showRemoveButton(channel) }
                 </li>
             );
         });

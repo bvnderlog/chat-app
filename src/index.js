@@ -43,8 +43,15 @@ if (!cookies.get('username')) {
 }
 
 const socket = io();
-socket.on('newMessage', (data) => store.dispatch(actions.messages.addMessage(data)));
-socket.on('newChannel', (data) => store.dispatch(actions.channels.addChannel(data)));
+socket.on('newMessage', (data) => {
+    store.dispatch(actions.messages.addMessage(data));
+});
+socket.on('newChannel', (data) => {
+    store.dispatch(actions.channels.addChannel(data));
+});
+socket.on('removeChannel', (channel) => {
+    store.dispatch(actions.channels.removeChannel(channel.data.id));
+});
 
 const username = cookies.get('username');
 const node = document.querySelector('.container');
