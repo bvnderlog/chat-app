@@ -7,11 +7,11 @@ import { Form, Field, Formik } from 'formik';
 import { Modal, FormGroup } from 'react-bootstrap';
 
 import routes from '../../routes';
-import { actions as allActions } from '../../slices';
+import { actions } from '../../slices';
 
-const { setHasNetworkError } = allActions.network;
-const { hideModal, setModalInfo } = allActions.modalInfo;
-const actions = { hideModal, setModalInfo, setHasNetworkError };
+const { setHasNetworkError } = actions.networkError;
+const { hideModal, setModalInfo } = actions.modalInfo;
+const actionMakers = { hideModal, setModalInfo, setHasNetworkError };
 
 const mapStateToProps = (state) => {
     const { modalInfo, networkError } = state;
@@ -80,4 +80,4 @@ RenameChannel.propTypes = {
     modalInfo: PropTypes.object,
 };
 
-export default connect(mapStateToProps, actions)(RenameChannel);
+export default connect(mapStateToProps, actionMakers)(RenameChannel);

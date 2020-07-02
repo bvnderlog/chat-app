@@ -7,8 +7,8 @@ import { FormGroup } from 'react-bootstrap';
 import { Formik, Form as FormikForm, Field } from 'formik';
 
 import routes from '../routes';
+import { actions } from '../slices';
 import UserContext from '../context';
-import { actions as allActions } from '../slices';
 
 
 const mapStateToProps = (state) => {
@@ -16,8 +16,8 @@ const mapStateToProps = (state) => {
     return { currentChannelId, networkError };
 };
 
-const { setHasNetworkError } = allActions.network;
-const actions = { setHasNetworkError };
+const { setHasNetworkError } = actions.networkError;
+const actionMakers = { setHasNetworkError };
 
 const handleSubmit = (props) => async (values, { setSubmitting, resetForm }) => {
     setSubmitting(false);
@@ -79,4 +79,4 @@ Form.propTypes = {
     setHasNetworkError: PropTypes.func,
 };
 
-export default connect(mapStateToProps, actions)(Form);
+export default connect(mapStateToProps, actionMakers)(Form);

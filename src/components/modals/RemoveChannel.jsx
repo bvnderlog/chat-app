@@ -5,12 +5,13 @@ import { connect } from 'react-redux';
 import { Modal, FormGroup } from 'react-bootstrap';
 
 import routes from '../../routes';
-import { actions as allActions } from '../../slices';
+import { actions } from '../../slices';
 
-const { removeChannel } = allActions.channels;
-const { setHasNetworkError } = allActions.network;
-const { hideModal, setModalInfo } = allActions.modalInfo;
-const actions = {
+const { removeChannel } = actions.channels;
+const { setHasNetworkError } = actions.networkError;
+const { hideModal, setModalInfo } = actions.modalInfo;
+
+const actionMakers = {
     hideModal,
     setModalInfo,
     removeChannel,
@@ -68,4 +69,4 @@ RemoveChannel.propTypes = {
     modalInfo: PropTypes.object,
 };
 
-export default connect(mapStateToProps, actions)(RemoveChannel);
+export default connect(mapStateToProps, actionMakers)(RemoveChannel);

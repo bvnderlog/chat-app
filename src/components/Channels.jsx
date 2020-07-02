@@ -3,7 +3,7 @@ import cn from 'classnames';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { actions as allActions } from '../slices';
+import { actions } from '../slices';
 
 
 const mapStateToProps = (state) => {
@@ -11,12 +11,12 @@ const mapStateToProps = (state) => {
     return { channels, currentChannelId };
 };
 
-const { hideModal, setModalInfo } = allActions.modalInfo;
-const { switchChannel } = allActions.currentChannelId;
-const actions = { switchChannel, hideModal, setModalInfo };
+const { hideModal, setModalInfo } = actions.modalInfo;
+const { switchChannel } = actions.currentChannelId;
+const actionMakers = { switchChannel, hideModal, setModalInfo };
 
 
-@connect(mapStateToProps, actions)
+@connect(mapStateToProps, actionMakers)
 class Channels extends React.Component {
     handleChannelSwitch = (id) => () => this.props.switchChannel(id);
 

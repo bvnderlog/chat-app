@@ -17,8 +17,9 @@ const renderMessage = (message) => {
 };
 
 const Messages = (props) => {
-    const scrollAnchor = useRef(null);
+    const scrollAnchor = useRef();
     useEffect(() => scrollAnchor.current.scrollIntoView({ behavior: 'smooth' }));
+
     return (
         <div id="messages-box" className="chat-messages overflow-auto mb-3">
             {props.messages.map(renderMessage)}

@@ -1,23 +1,23 @@
-import modalReducer, { actions as modalActions } from './modal';
-import networkReducer, { actions as networkActions } from './network';
-import channelsReducer, { actions as channelsActions } from './channels';
-import messagesReducer, { actions as messagesActions } from './messages';
-import currentChannelReducer, { actions as currentChannelActions } from './currentChannel';
+import modalReducer, { actions as modalInfo } from './modalInfo';
+import channelsReducer, { actions as channels } from './channels';
+import messagesReducer, { actions as messages } from './messages';
+import networkReducer, { actions as networkError } from './networkError';
+import currentChannelIdReducer, { actions as currentChannelId } from './currentChannelId';
 
 const reducers = {
     modalInfo: modalReducer,
     channels: channelsReducer,
     messages: messagesReducer,
     networkError: networkReducer,
-    currentChannelId: currentChannelReducer,
+    currentChannelId: currentChannelIdReducer,
 };
 
 const actions = {
-    network: networkActions,
-    modalInfo: modalActions,
-    channels: channelsActions,
-    messages: messagesActions,
-    currentChannelId: currentChannelActions,
+    networkError,
+    modalInfo,
+    channels,
+    messages,
+    currentChannelId,
 };
 
 export { reducers, actions };
