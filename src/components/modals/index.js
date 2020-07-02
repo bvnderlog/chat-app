@@ -1,4 +1,5 @@
-import AddChannel from './AddChannel';
+// eslint-disable-next-line import/extensions
+import AddChannel from './AddChannel.jsx';
 
 const modalTypes = {
     add: AddChannel,

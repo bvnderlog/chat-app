@@ -49,32 +49,26 @@ const handleSubmit = (props) => async (values, { setSubmitting, resetForm }) => 
 
 const Form = (props) => {
     const username = useContext(UserContext);
+    const inputClasses = cn({
+        'form-control': true,
+        'is-invalid': props.networkError,
+    });
     return (
         <Formik
             initialValues={{ body: '' }}
             onSubmit={handleSubmit({ ...props, username })}
         >
-            {
-                () => {
-                    const inputClasses = cn({
-                        'form-control': true,
-                        'is-invalid': props.networkError,
-                    });
-                    return (
-                        <div className="mt-auto">
-                            <FormikForm>
-                                <FormGroup>
-                                    <Field name="body" className={inputClasses} />
-                                    <div className="d-block invalid-feedback">
-                                        {props.networkError && 'Network error'}
-                                                &nbsp;
-                                    </div>
-                                </FormGroup>
-                            </FormikForm>
+            <div className="mt-auto">
+                <FormikForm>
+                    <FormGroup>
+                        <Field name="body" className={inputClasses} />
+                        <div className="d-block invalid-feedback">
+                            {props.networkError && 'Network error'}
+                            &nbsp;
                         </div>
-                    );
-                }
-            }
+                    </FormGroup>
+                </FormikForm>
+            </div>
         </Formik>
     );
 };

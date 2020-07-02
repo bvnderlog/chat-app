@@ -2,9 +2,9 @@ import cn from 'classnames';
 import axios from 'axios';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useFormik, Form, Field, Formik } from 'formik';
+import { Form, Field, Formik } from 'formik';
 import { connect } from 'react-redux';
-import { Modal, FormGroup, FormControl } from 'react-bootstrap';
+import { Modal, FormGroup } from 'react-bootstrap';
 
 import routes from '../../routes';
 import { actions as allActions } from '../../slices';
@@ -40,16 +40,10 @@ const onSubmit = (props) => async (values, { setSubmitting, resetForm }) => {
 };
 
 const AddChannel = (props) => {
-    const formik = useFormik({
-        onSubmit: onSubmit(props),
-        initialValues: { body: '' },
-    });
-
     const inputClasses = cn({
         'form-control': true,
         'is-invalid': props.networkError,
     });
-
     return (
         <Modal show={props.modalInfo.type === 'add'} onHide={props.hideModal}>
             <Modal.Header closeButton onHide={props.hideModal}>
