@@ -3,6 +3,7 @@ import axios from 'axios';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { FormGroup } from 'react-bootstrap';
 import { Formik, Form as FormikForm, Field } from 'formik';
 
 import routes from '../routes';
@@ -66,15 +67,13 @@ class Form extends React.Component {
                         return (
                             <div className="mt-auto">
                                 <FormikForm>
-                                    <div className="form-group">
-                                        <div className="input-group">
-                                            <Field name="body" className={inputClasses} />
-                                            <div className="d-block invalid-feedback">
-                                                {networkError && 'Network error'}
+                                    <FormGroup>
+                                        <Field name="body" className={inputClasses} />
+                                        <div className="d-block invalid-feedback">
+                                            {networkError && 'Network error'}
                                                 &nbsp;
-                                            </div>
                                         </div>
-                                    </div>
+                                    </FormGroup>
                                 </FormikForm>
                             </div>
                         );

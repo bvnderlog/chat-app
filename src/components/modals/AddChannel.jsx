@@ -2,9 +2,9 @@ import cn from 'classnames';
 import axios from 'axios';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Field, Formik } from 'formik';
+import { useFormik, Form, Field, Formik } from 'formik';
 import { connect } from 'react-redux';
-import { Modal, FormGroup } from 'react-bootstrap';
+import { Modal, FormGroup, FormControl } from 'react-bootstrap';
 
 import routes from '../../routes';
 import { actions as allActions } from '../../slices';
@@ -39,38 +39,43 @@ const onSubmit = (props) => async (values, { setSubmitting, resetForm }) => {
     props.hideModal();
 };
 
-const AddChannel = (props) => (
-    <Modal show={props.modalInfo.type === 'add'} onHide={props.hideModal}>
-        <Modal.Header closeButton onHide={props.hideModal}>
-            <Modal.Title>Add</Modal.Title>
-        </Modal.Header>
+const AddChannel = (props) => {
+    const formik = useFormik({
+        onSubmit: onSubmit(props),
+        initialValues: { body: '' },
+    });
 
-        <Modal.Body>
-            <Formik
-                initialValues={{ body: '' }}
-                onSubmit={onSubmit(props)}
-            >{ () => {
-                    const inputClasses = cn({
-                        'form-control': true,
-                        'is-invalid': props.networkError,
-                    });
-                    return (<Form>
+    const inputClasses = cn({
+        'form-control': true,
+        'is-invalid': props.networkError,
+    });
+
+    return (
+        <Modal show={props.modalInfo.type === 'add'} onHide={props.hideModal}>
+            <Modal.Header closeButton onHide={props.hideModal}>
+                <Modal.Title>Add</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+                <Formik
+                    initialValues={{ body: '' }}
+                    onSubmit={onSubmit(props)}
+                >
+                    <Form>
                         <FormGroup>
                             <Field required name="body" className={inputClasses}/>
                             <div className="d-block invalid-feedback">
                                 {props.networkError && 'Network error'}
-                                    &nbsp;
+                                &nbsp;
                             </div>
                         </FormGroup>
                         <input type="submit" className="btn btn-primary" value="submit" />
                     </Form>
-                    );
-                }
-                }
-            </Formik>
-        </Modal.Body>
-    </Modal>
-);
+                </Formik>
+            </Modal.Body>
+        </Modal>
+    );
+};
 
 AddChannel.propTypes = {
     hideModal: PropTypes.func,

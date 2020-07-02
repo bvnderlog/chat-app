@@ -14,7 +14,6 @@ const renderModal = (modalInfo) => {
     if (!modalInfo.type) {
         return null;
     }
-
     const Modal = getModal(modalInfo.type);
     return <Modal />;
 };
