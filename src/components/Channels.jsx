@@ -24,16 +24,25 @@ class Channels extends React.Component {
 
     handleChannelRemove = (channel) => () => this.props.setModalInfo({ type: 'remove', channel });
 
-    showRemoveButton = (channel) => {
+    handleChannelRename = (channel) => () => this.props.setModalInfo({ type: 'rename', channel });
+
+    showEditButtons = (channel) => {
         if (!channel.removable) {
             return null;
         }
         return (
-            <button
-                type="button"
-                className="border-0 btn-link p-0"
-                onClick={this.handleChannelRemove(channel)}
-            >-</button>
+            <>
+                <button
+                    type="button"
+                    className="border-0 btn-link p-0"
+                    onClick={this.handleChannelRemove(channel)}
+                >-</button>
+                <button
+                    type="button"
+                    className="border-0 btn-link p-0"
+                    onClick={this.handleChannelRename(channel)}
+                >^</button>
+            </>
         );
     }
 
@@ -60,7 +69,7 @@ class Channels extends React.Component {
                         className={classes}>
                         {name}
                     </button>
-                    { this.showRemoveButton(channel) }
+                    { this.showEditButtons(channel) }
                 </li>
             );
         });

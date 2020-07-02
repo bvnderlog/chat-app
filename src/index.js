@@ -50,7 +50,12 @@ socket.on('newChannel', (data) => {
     store.dispatch(actions.channels.addChannel(data));
 });
 socket.on('removeChannel', (channel) => {
-    store.dispatch(actions.channels.removeChannel(channel.data.id));
+    const { id } = channel.data;
+    store.dispatch(actions.channels.removeChannel(id));
+    store.dispatch(actions.messages.removeChannelMessages(id));
+});
+socket.on('renameChannel', (data) => {
+    store.dispatch(actions.channels.renameChannel(data));
 });
 
 const username = cookies.get('username');

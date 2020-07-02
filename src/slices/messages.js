@@ -9,6 +9,10 @@ const messagesSlice = createSlice({
             const messageData = action.payload.data.attributes;
             state.push(messageData);
         },
+        removeChannelMessages(state, action) {
+            const id = action.payload;
+            return state.filter((message) => message.channelId !== id);
+        },
     },
 });
 

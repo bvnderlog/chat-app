@@ -14,9 +14,9 @@ const channelsSlice = createSlice({
             return state.filter((channel) => channel.id !== channelId);
         },
         renameChannel(state, action) {
-            const { channelId, newChannelName } = action.payload;
-            const channel = state.find(({ id }) => id === channelId);
-            channel.name = newChannelName;
+            const { id, name } = action.payload.data.attributes;
+            const channel = state.find((item) => item.id === id);
+            channel.name = name;
         },
     },
 });
