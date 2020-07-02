@@ -39,7 +39,7 @@ const store = configureStore({ preloadedState, reducer: reducers });
 
 if (!cookies.get('username')) {
     const newUsername = faker.internet.userName();
-    cookies.set('username', newUsername, { sameSite: 'strict' });
+    cookies.set('username', newUsername);
 }
 
 const socket = io();
@@ -54,6 +54,7 @@ socket.on('newChannel', (data) => {
 
 socket.on('removeChannel', (channel) => {
     const { id } = channel.data;
+
     store.dispatch(actions.messages.removeChannelMessages(id));
     store.dispatch(actions.channels.removeChannel(id));
 
