@@ -60,8 +60,7 @@ const AddChannel = (props) => {
                         <FormGroup>
                             <Field required name="body" className={inputClasses} />
                             <div className="d-block invalid-feedback">
-                                {props.networkError && 'Network error'}
-                                &nbsp;
+                                {props.networkError && 'Network error'}&nbsp;
                             </div>
                         </FormGroup>
                         <input type="submit" className="btn btn-primary" value="submit" />

@@ -69,8 +69,7 @@ const Form = (props) => {
                     <FormGroup>
                         <Field name="body" className={inputClasses} />
                         <div className="d-block invalid-feedback">
-                            {props.networkError && 'Network error'}
-                            &nbsp;
+                            {props.networkError && 'Network error'}&nbsp;
                         </div>
                     </FormGroup>
                 </FormikForm>

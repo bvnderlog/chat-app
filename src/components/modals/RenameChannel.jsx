@@ -9,9 +9,12 @@ import { Modal, FormGroup } from 'react-bootstrap';
 import routes from '../../routes';
 import { actions } from '../../slices';
 
-const { setHasNetworkError } = actions.networkError;
-const { hideModal, setModalInfo } = actions.modalInfo;
-const actionMakers = { hideModal, setModalInfo, setHasNetworkError };
+
+const actionMakers = {
+    hideModal: actions.modalInfo.hideModal,
+    setModalInfo: actions.modalInfo.setModalInfo,
+    setHasNetworkError: actions.networkError.setHasNetworkError,
+};
 
 const mapStateToProps = (state) => {
     const { modalInfo, networkError } = state;
@@ -21,41 +24,44 @@ const mapStateToProps = (state) => {
 const onSubmit = (props) => async (values, { setSubmitting, resetForm }) => {
     setSubmitting(false);
 
-    const url = routes.channelPath(props.modalInfo.channel.id);
+    const {
+        modalInfo,
+        setHasNetworkError,
+        hideModal,
+        networkError,
+    } = props;
+    const url = routes.channelPath(modalInfo.channel.id);
     const data = { attributes: { name: values.body } };
 
     try {
         await axios.patch(url, { data });
     } catch (error) {
-        props.setHasNetworkError(true);
+        setHasNetworkError(true);
         return;
     }
 
     resetForm();
-    if (props.networkError) {
-        props.setHasNetworkError(false);
+    if (networkError) {
+        setHasNetworkError(false);
     }
 
-    props.hideModal();
+    hideModal();
 };
 
 const RenameChannel = (props) => {
-    const inputClasses = cn({
-        'form-control': true,
-        'is-invalid': props.networkError,
-    });
+    const { modalInfo, networkError, hideModal } = props;
+    const inputClasses = cn({ 'form-control': true, 'is-invalid': networkError });
 
     const form = (
         <Formik
-            initialValues={{ body: props.modalInfo.channel.name }}
+            initialValues={{ body: modalInfo.channel.name }}
             onSubmit={onSubmit(props)}
         >
             <Form>
                 <FormGroup>
                     <Field required name="body" className={inputClasses} />
                     <div className="d-block invalid-feedback">
-                        {props.networkError && 'Network error'}
-                        &nbsp;
+                        {networkError && 'Network error'}&nbsp;
                     </div>
                 </FormGroup>
                 <input type="submit" className="btn btn-primary" value="submit" />
@@ -64,8 +70,8 @@ const RenameChannel = (props) => {
     );
 
     return (
-        <Modal show={props.modalInfo.type === 'rename'} onHide={props.hideModal}>
-            <Modal.Header closeButton onClick={props.hideModal}>
+        <Modal show={modalInfo.type === 'rename'} onHide={hideModal}>
+            <Modal.Header closeButton onClick={hideModal}>
                 <Modal.Title>Rename</Modal.Title>
             </Modal.Header>
             <Modal.Body>{form}</Modal.Body>
