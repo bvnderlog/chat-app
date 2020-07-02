@@ -11,43 +11,47 @@ const mapStateToProps = (state) => {
     return { channels, currentChannelId };
 };
 
-const { hideModal, setModalInfo } = actions.modalInfo;
-const { switchChannel } = actions.currentChannelId;
-const actionMakers = { switchChannel, hideModal, setModalInfo };
+const actionMakers = {
+    switchChannel: actions.currentChannelId.switchChannel,
+    hideModal: actions.modalInfo.hideModal,
+    setModalInfo: actions.modalInfo.setModalInfo,
+};
 
+const handleChannelSwitch = (props) => () => props.switchChannel(props.id);
+const handleChannelAdd = (updateModalInfo) => () => updateModalInfo({ type: 'add' });
+const handleChannelRemove = (props) => () => props.setModalInfo(
+    { type: 'remove', channel: props.channel },
+);
+const handleChannelRename = (props) => () => props.setModalInfo(
+    { type: 'rename', channel: props.channel },
+);
 
 @connect(mapStateToProps, actionMakers)
 class Channels extends React.Component {
-    handleChannelSwitch = (id) => () => this.props.switchChannel(id);
-
-    handleChannelAdd = () => this.props.setModalInfo({ type: 'add' });
-
-    handleChannelRemove = (channel) => () => this.props.setModalInfo({ type: 'remove', channel });
-
-    handleChannelRename = (channel) => () => this.props.setModalInfo({ type: 'rename', channel });
-
-    showEditButtons = (channel) => {
+    showEditButtons(channel) {
         if (!channel.removable) {
             return null;
         }
+
+        const { setModalInfo } = this.props;
         return (
             <>
                 <button
                     type="button"
                     className="border-0 btn-link p-0"
-                    onClick={this.handleChannelRemove(channel)}
+                    onClick={handleChannelRemove({ channel, setModalInfo })}
                 >-</button>
                 <button
                     type="button"
                     className="border-0 btn-link p-0"
-                    onClick={this.handleChannelRename(channel)}
+                    onClick={handleChannelRename({ channel, setModalInfo })}
                 >^</button>
             </>
         );
     }
 
     renderChannels() {
-        const { channels, currentChannelId } = this.props;
+        const { channels, currentChannelId, switchChannel } = this.props;
         if (channels.length === 0) {
             return null;
         }
@@ -64,7 +68,7 @@ class Channels extends React.Component {
             return (
                 <li key={id} className="nav-item">
                     <button
-                        onClick={this.handleChannelSwitch(id)}
+                        onClick={handleChannelSwitch({ id, switchChannel })}
                         type="button"
                         className={classes}>
                         {name}
@@ -82,12 +86,13 @@ class Channels extends React.Component {
     }
 
     render() {
+        const { setModalInfo } = this.props;
         return (
             <>
                 <div className="d-flex mb-2">
                     <span>Channels</span>
                     <button
-                        onClick={this.handleChannelAdd}
+                        onClick={handleChannelAdd(setModalInfo)}
                         className="btn btn-link p-0 ml-auto"
                     >+</button>
                 </div>

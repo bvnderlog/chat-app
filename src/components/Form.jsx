@@ -16,16 +16,21 @@ const mapStateToProps = (state) => {
     return { currentChannelId, networkError };
 };
 
-const { setHasNetworkError } = actions.networkError;
-const actionMakers = { setHasNetworkError };
+const actionMakers = {
+    setHasNetworkError: actions.networkError.setHasNetworkError,
+};
 
 const handleSubmit = (props) => async (values, { setSubmitting, resetForm }) => {
     setSubmitting(false);
 
-    const { currentChannelId, networkError, username } = props;
-    const { channelMessagesPath } = routes;
+    const {
+        currentChannelId,
+        networkError,
+        username,
+        setHasNetworkError,
+    } = props;
 
-    const url = channelMessagesPath(currentChannelId);
+    const url = routes.channelMessagesPath(currentChannelId);
     const data = {
         attributes: {
             channelId: currentChannelId,
@@ -37,13 +42,13 @@ const handleSubmit = (props) => async (values, { setSubmitting, resetForm }) => 
     try {
         await axios.post(url, { data });
     } catch (error) {
-        props.setHasNetworkError(true);
+        setHasNetworkError(true);
         return;
     }
 
     resetForm();
     if (networkError) {
-        props.setHasNetworkError(false);
+        setHasNetworkError(false);
     }
 };
 
@@ -53,6 +58,7 @@ const Form = (props) => {
         'form-control': true,
         'is-invalid': props.networkError,
     });
+
     return (
         <Formik
             initialValues={{ body: '' }}
@@ -73,10 +79,6 @@ const Form = (props) => {
     );
 };
 
-Form.propTypes = {
-    networkError: PropTypes.bool,
-    currentChannelId: PropTypes.number,
-    setHasNetworkError: PropTypes.func,
-};
+Form.propTypes = { networkError: PropTypes.bool };
 
 export default connect(mapStateToProps, actionMakers)(Form);
