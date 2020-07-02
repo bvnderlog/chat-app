@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/extensions
-import AddChannel from './AddChannel.jsx';
+import AddChannel from './AddChannel';
 import RemoveChannel from './RemoveChannel';
 import RenameChannel from './RenameChannel';
 
