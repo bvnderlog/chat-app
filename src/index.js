@@ -43,17 +43,27 @@ if (!cookies.get('username')) {
 }
 
 const socket = io();
+
 socket.on('newMessage', (data) => {
     store.dispatch(actions.messages.addMessage(data));
 });
+
 socket.on('newChannel', (data) => {
     store.dispatch(actions.channels.addChannel(data));
 });
+
 socket.on('removeChannel', (channel) => {
     const { id } = channel.data;
-    store.dispatch(actions.channels.removeChannel(id));
     store.dispatch(actions.messages.removeChannelMessages(id));
+    store.dispatch(actions.channels.removeChannel(id));
+
+    const state = store.getState();
+    if (id === state.currentChannelId) {
+        const [lastChannel] = state.channels.slice(-1);
+        store.dispatch(actions.currentChannelId.switchChannel(lastChannel.id));
+    }
 });
+
 socket.on('renameChannel', (data) => {
     store.dispatch(actions.channels.renameChannel(data));
 });
