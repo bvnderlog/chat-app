@@ -55,7 +55,6 @@ socket.on('newChannel', (data) => {
 socket.on('removeChannel', (channel) => {
     const { id } = channel.data;
 
-    store.dispatch(actions.messages.removeChannelMessages(id));
     store.dispatch(actions.channels.removeChannel(id));
 
     const state = store.getState();
