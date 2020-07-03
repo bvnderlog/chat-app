@@ -32,7 +32,8 @@ const preloadedState = {
     channels,
     messages,
     currentChannelId,
-    networkError: false,
+    formError: false,
+    modalError: false,
     modalInfo: { channel: null, type: null },
 };
 const store = configureStore({ preloadedState, reducer: reducers });

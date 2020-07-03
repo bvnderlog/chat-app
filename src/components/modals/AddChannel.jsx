@@ -10,44 +10,49 @@ import routes from '../../routes';
 import { actions } from '../../slices';
 
 
-const { setHasNetworkError } = actions.networkError;
-const { hideModal, setModalInfo } = actions.modalInfo;
-const actionMakers = { hideModal, setModalInfo, setHasNetworkError };
+const actionMakers = {
+    hideModal: actions.modalInfo.hideModal,
+    setModalInfo: actions.modalInfo.setModalInfo,
+    setHasError: actions.modalError.setHasError,
+};
 
 const mapStateToProps = (state) => {
-    const { modalInfo, networkError } = state;
-    return { modalInfo, networkError };
+    const { modalInfo, modalError } = state;
+    return { modalInfo, modalError };
 };
 
 const onSubmit = (props) => async (values, { setSubmitting, resetForm }) => {
     setSubmitting(false);
 
+    const { modalError, setHasError, hideModal } = props;
     const url = routes.channelsPath();
     const data = { attributes: { name: values.body } };
 
     try {
         await axios.post(url, { data });
     } catch (error) {
-        props.setHasNetworkError(true);
+        setHasError(true);
         return;
     }
 
     resetForm();
-    if (props.networkError) {
-        props.setHasNetworkError(false);
+    if (modalError) {
+        setHasError(false);
     }
 
-    props.hideModal();
+    hideModal();
 };
 
 const AddChannel = (props) => {
+    const { modalError, hideModal, modalInfo } = props;
     const inputClasses = cn({
         'form-control': true,
-        'is-invalid': props.networkError,
+        'is-invalid': modalError,
     });
+
     return (
-        <Modal show={props.modalInfo.type === 'add'} onHide={props.hideModal}>
-            <Modal.Header closeButton onHide={props.hideModal}>
+        <Modal show={modalInfo.type === 'add'} onHide={hideModal}>
+            <Modal.Header closeButton onHide={hideModal}>
                 <Modal.Title>Add</Modal.Title>
             </Modal.Header>
 
@@ -60,7 +65,7 @@ const AddChannel = (props) => {
                         <FormGroup>
                             <Field required name="body" className={inputClasses} />
                             <div className="d-block invalid-feedback">
-                                {props.networkError && 'Network error'}&nbsp;
+                                {modalError && 'Network error'}&nbsp;
                             </div>
                         </FormGroup>
                         <input type="submit" className="btn btn-primary" value="submit" />
@@ -74,7 +79,7 @@ const AddChannel = (props) => {
 AddChannel.propTypes = {
     hideModal: PropTypes.func,
     setModalInfo: PropTypes.func,
-    networkError: PropTypes.bool,
+    modalError: PropTypes.bool,
     modalInfo: PropTypes.object,
 };
 

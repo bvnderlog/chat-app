@@ -12,12 +12,12 @@ import UserContext from '../context';
 
 
 const mapStateToProps = (state) => {
-    const { currentChannelId, networkError } = state;
-    return { currentChannelId, networkError };
+    const { currentChannelId, formError } = state;
+    return { currentChannelId, formError };
 };
 
 const actionMakers = {
-    setHasNetworkError: actions.networkError.setHasNetworkError,
+    setHasError: actions.formError.setHasError,
 };
 
 const handleSubmit = (props) => async (values, { setSubmitting, resetForm }) => {
@@ -25,9 +25,9 @@ const handleSubmit = (props) => async (values, { setSubmitting, resetForm }) => 
 
     const {
         currentChannelId,
-        networkError,
+        formError,
         username,
-        setHasNetworkError,
+        setHasError,
     } = props;
 
     const url = routes.channelMessagesPath(currentChannelId);
@@ -42,21 +42,22 @@ const handleSubmit = (props) => async (values, { setSubmitting, resetForm }) => 
     try {
         await axios.post(url, { data });
     } catch (error) {
-        setHasNetworkError(true);
+        setHasError(true);
         return;
     }
 
     resetForm();
-    if (networkError) {
-        setHasNetworkError(false);
+    if (formError) {
+        setHasError(false);
     }
 };
 
 const Form = (props) => {
+    const { formError } = props;
     const username = useContext(UserContext);
     const inputClasses = cn({
         'form-control': true,
-        'is-invalid': props.networkError,
+        'is-invalid': formError,
     });
 
     return (
@@ -69,7 +70,7 @@ const Form = (props) => {
                     <FormGroup>
                         <Field name="body" className={inputClasses} />
                         <div className="d-block invalid-feedback">
-                            {props.networkError && 'Network error'}&nbsp;
+                            {formError && 'Network error'}&nbsp;
                         </div>
                     </FormGroup>
                 </FormikForm>
@@ -78,6 +79,6 @@ const Form = (props) => {
     );
 };
 
-Form.propTypes = { networkError: PropTypes.bool };
+Form.propTypes = { formError: PropTypes.bool };
 
 export default connect(mapStateToProps, actionMakers)(Form);

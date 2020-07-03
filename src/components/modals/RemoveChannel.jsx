@@ -10,43 +10,45 @@ import { actions } from '../../slices';
 
 const actionMakers = {
     hideModal: actions.modalInfo.hideModal,
+    setHasError: actions.modalError.setHasError,
     setModalInfo: actions.modalInfo.setModalInfo,
     removeChannel: actions.channels.removeChannel,
-    setHasNetworkError: actions.networkError.setHasNetworkError,
 };
 
 const mapStateToProps = (state) => {
-    const { modalInfo, networkError } = state;
-    return { modalInfo, networkError };
+    const { modalInfo, modalError } = state;
+    return { modalInfo, modalError };
 };
 
 const onSubmit = (props) => async (event) => {
     event.preventDefault();
 
-    const { setHasNetworkError, hideModal, channelId } = props;
+    const {
+        setHasError,
+        hideModal,
+        channelId,
+        modalError,
+    } = props;
     const url = routes.channelPath(channelId);
 
     try {
         await axios.delete(url);
     } catch (error) {
-        setHasNetworkError(true);
+        setHasError(true);
         return;
     }
 
-    if (props.networkError) {
-        setHasNetworkError(false);
+    if (modalError) {
+        setHasError(false);
     }
 
     hideModal();
 };
 
 const RemoveChannel = (props) => {
-    const {
-        modalInfo,
-        hideModal,
-        networkError,
-    } = props;
+    const { modalInfo, hideModal, modalError } = props;
     const submitData = { ...props, channelId: modalInfo.channel.id };
+
     return (
         <Modal show={modalInfo.type === 'remove'} onHide={hideModal}>
             <Modal.Header closeButton onClick={hideModal}>
@@ -57,7 +59,7 @@ const RemoveChannel = (props) => {
                     <FormGroup>
                         <input className="btn btn-danger" type="submit" value="remove" />
                         <div className="d-block invalid-feedback">
-                            {networkError && 'Network error'}&nbsp;
+                            {modalError && 'Network error'}&nbsp;
                         </div>
                     </FormGroup>
                 </form>
@@ -68,7 +70,7 @@ const RemoveChannel = (props) => {
 
 RemoveChannel.propTypes = {
     hideModal: PropTypes.func,
-    networkError: PropTypes.bool,
+    modalError: PropTypes.bool,
     modalInfo: PropTypes.object,
 };
 
