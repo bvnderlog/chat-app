@@ -9,6 +9,7 @@ import { Formik, Form as FormikForm, Field } from 'formik';
 import routes from '../routes';
 import { actions } from '../slices';
 import UserContext from '../context';
+import InvalidFeedback from './InvalidFeedback';
 
 
 const mapStateToProps = (state) => {
@@ -69,9 +70,7 @@ const Form = (props) => {
                 <FormikForm>
                     <FormGroup>
                         <Field name="body" className={inputClasses} />
-                        <div className="d-block invalid-feedback">
-                            {formError && 'Network error'}&nbsp;
-                        </div>
+                        { formError && <InvalidFeedback />}
                     </FormGroup>
                 </FormikForm>
             </div>

@@ -6,6 +6,7 @@ import { Modal, FormGroup } from 'react-bootstrap';
 
 import routes from '../../routes';
 import { actions } from '../../slices';
+import InvalidFeedback from '../InvalidFeedback';
 
 
 const actionMakers = {
@@ -58,9 +59,7 @@ const RemoveChannel = (props) => {
                 <form onSubmit={onSubmit(submitData)}>
                     <FormGroup>
                         <input className="btn btn-danger" type="submit" value="remove" />
-                        <div className="d-block invalid-feedback">
-                            {modalError && 'Network error'}&nbsp;
-                        </div>
+                        { modalError && <InvalidFeedback />}
                     </FormGroup>
                 </form>
             </Modal.Body>

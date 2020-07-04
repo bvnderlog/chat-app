@@ -8,6 +8,7 @@ import { Modal, FormGroup } from 'react-bootstrap';
 
 import routes from '../../routes';
 import { actions } from '../../slices';
+import InvalidFeedback from '../InvalidFeedback';
 
 
 const actionMakers = {
@@ -64,9 +65,7 @@ const AddChannel = (props) => {
                     <Form>
                         <FormGroup>
                             <Field required name="body" className={inputClasses} />
-                            <div className="d-block invalid-feedback">
-                                {modalError && 'Network error'}&nbsp;
-                            </div>
+                            { modalError && <InvalidFeedback />}
                         </FormGroup>
                         <input type="submit" className="btn btn-primary" value="submit" />
                     </Form>
