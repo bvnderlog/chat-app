@@ -2,7 +2,7 @@ import React from 'react';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { ButtonGroup, Dropdown } from 'react-bootstrap';
+import { ButtonGroup, Dropdown, DropdownButton } from 'react-bootstrap';
 
 import { actions } from '../slices';
 
@@ -53,20 +53,20 @@ class Channels extends React.Component {
         }
 
         return (
-            <Dropdown as={ButtonGroup} style={{ width: '100%' }}>
+            <ButtonGroup style={{ width: '100%' }}>
                 {mainButton}
-                <Dropdown.Toggle
+                <DropdownButton
+                    as={ButtonGroup}
                     variant={id === currentChannelId ? 'primary' : 'link' }
-                    id="dropdown-split-basic" />
-                <Dropdown.Menu>
+                >
                     <Dropdown.Item
                         onClick={handleChannelRemove({ channel, setModalInfo })}
                     >Remove</Dropdown.Item>
                     <Dropdown.Item
                         onClick={handleChannelRename({ channel, setModalInfo })}
                     >Rename</Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
+                </DropdownButton>
+            </ButtonGroup>
         );
     }
 
