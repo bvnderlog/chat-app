@@ -1,9 +1,9 @@
 import axios from 'axios';
-import React from 'react';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Form, Field, Formik } from 'formik';
+import React, { useRef, useEffect } from 'react';
 import { Modal, FormGroup } from 'react-bootstrap';
 
 import routes from '../../routes';
@@ -53,6 +53,13 @@ const RenameChannel = (props) => {
     const { modalInfo, modalError, hideModal } = props;
     const inputClasses = cn({ 'form-control': true, 'is-invalid': modalError });
 
+    const inputRef = useRef();
+    useEffect(() => {
+        inputRef.current.focus();
+    });
+
+    const handleFocus = () => inputRef.current.select();
+
     const form = (
         <Formik
             initialValues={{ body: modalInfo.channel.name }}
@@ -60,7 +67,13 @@ const RenameChannel = (props) => {
         >
             <Form>
                 <FormGroup>
-                    <Field required name="body" className={inputClasses} />
+                    <Field
+                        innerRef={inputRef}
+                        required
+                        name="body"
+                        className={inputClasses}
+                        onFocus={handleFocus}
+                    />
                     { modalError && <InvalidFeedback />}
                 </FormGroup>
                 <input type="submit" className="btn btn-primary" value="submit" />

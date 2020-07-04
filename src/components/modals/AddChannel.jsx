@@ -1,9 +1,9 @@
-import cn from 'classnames';
 import axios from 'axios';
-import React from 'react';
+import cn from 'classnames';
 import PropTypes from 'prop-types';
-import { Form, Field, Formik } from 'formik';
 import { connect } from 'react-redux';
+import { Form, Field, Formik } from 'formik';
+import React, { useRef, useEffect } from 'react';
 import { Modal, FormGroup } from 'react-bootstrap';
 
 import routes from '../../routes';
@@ -51,6 +51,11 @@ const AddChannel = (props) => {
         'is-invalid': modalError,
     });
 
+    const inputRef = useRef();
+    useEffect(() => {
+        inputRef.current.focus();
+    });
+
     return (
         <Modal show={modalInfo.type === 'add'} onHide={hideModal}>
             <Modal.Header closeButton onHide={hideModal}>
@@ -64,7 +69,7 @@ const AddChannel = (props) => {
                 >
                     <Form>
                         <FormGroup>
-                            <Field required name="body" className={inputClasses} />
+                            <Field innerRef={inputRef} required name="body" className={inputClasses} />
                             { modalError && <InvalidFeedback />}
                         </FormGroup>
                         <input type="submit" className="btn btn-primary" value="submit" />

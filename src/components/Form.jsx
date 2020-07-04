@@ -2,9 +2,9 @@ import axios from 'axios';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import React, { useContext } from 'react';
 import { FormGroup } from 'react-bootstrap';
 import { Formik, Form as FormikForm, Field } from 'formik';
+import React, { useContext, useRef, useEffect } from 'react';
 
 import routes from '../routes';
 import { actions } from '../slices';
@@ -61,6 +61,11 @@ const Form = (props) => {
         'is-invalid': formError,
     });
 
+    const inputRef = useRef();
+    useEffect(() => {
+        inputRef.current.focus();
+    });
+
     return (
         <Formik
             initialValues={{ body: '' }}
@@ -69,7 +74,7 @@ const Form = (props) => {
             <div className="mt-auto">
                 <FormikForm>
                     <FormGroup>
-                        <Field name="body" className={inputClasses} />
+                        <Field innerRef={inputRef} name="body" className={inputClasses} />
                         { formError && <InvalidFeedback />}
                     </FormGroup>
                 </FormikForm>
