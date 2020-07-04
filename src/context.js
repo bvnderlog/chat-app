@@ -1,3 +1,4 @@
 import React from 'react';
 
-export default React.createContext('anonymous');
+const defaultUsername = 'anonymous';
+export default React.createContext(defaultUsername);

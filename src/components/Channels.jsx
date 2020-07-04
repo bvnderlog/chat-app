@@ -33,28 +33,28 @@ class Channels extends React.Component {
         const { currentChannelId, switchChannel, setModalInfo } = this.props;
         const { id, name, removable } = channel;
 
-        const classes = cn({
+        const channelButtonClasses = cn({
             btn: true,
             active: id === currentChannelId,
             'nav-link': true,
             'btn-block': true,
             'shadow-none': true,
         });
-        const mainButton = (
+        const channelButton = (
             <button
                 onClick={handleChannelSwitch({ id, switchChannel })}
                 type="button"
-                className={classes}>{name}
+                className={channelButtonClasses}>{name}
             </button>
         );
 
         if (!removable) {
-            return mainButton;
+            return channelButton;
         }
 
         return (
             <ButtonGroup style={{ width: '100%' }}>
-                {mainButton}
+                {channelButton}
                 <DropdownButton
                     as={ButtonGroup}
                     variant={id === currentChannelId ? 'primary' : 'link' }
