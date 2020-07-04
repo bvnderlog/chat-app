@@ -2,6 +2,11 @@ import React from 'react';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import {
+    ButtonGroup,
+    DropdownButton,
+    Dropdown,
+} from 'react-bootstrap';
 
 import { actions } from '../slices';
 
@@ -28,55 +33,52 @@ const handleChannelRename = (props) => () => props.setModalInfo(
 
 @connect(mapStateToProps, actionMakers)
 class Channels extends React.Component {
-    showEditButtons(channel) {
-        if (!channel.removable) {
-            return null;
+    displayChannelButton(channel) {
+        const { currentChannelId, switchChannel, setModalInfo } = this.props;
+        const { id, name, removable } = channel;
+        const classes = cn({
+            btn: true,
+            active: id === currentChannelId,
+            'nav-link': true,
+            'btn-block': true,
+            'shadow-none': true,
+        });
+        const mainButton = (
+            <button
+                onClick={handleChannelSwitch({ id, switchChannel })}
+                type="button"
+                className={classes}>{name}
+            </button>
+        );
+        if (!removable) {
+            return mainButton;
         }
-
-        const { setModalInfo } = this.props;
         return (
-            <>
-                <button
-                    type="button"
-                    className="border-0 btn-link p-0"
-                    onClick={handleChannelRemove({ channel, setModalInfo })}
-                >-</button>
-                <button
-                    type="button"
-                    className="border-0 btn-link p-0"
-                    onClick={handleChannelRename({ channel, setModalInfo })}
-                >^</button>
-            </>
+            <ButtonGroup>
+                {mainButton}
+                <DropdownButton as={ButtonGroup}>
+                    <Dropdown.Item
+                        onClick={handleChannelRemove({ channel, setModalInfo })}
+                    >Remove</Dropdown.Item>
+                    <Dropdown.Item
+                        onClick={handleChannelRename({ channel, setModalInfo })}
+                    >Rename</Dropdown.Item>
+                </DropdownButton>
+            </ButtonGroup>
         );
     }
 
     renderChannels() {
-        const { channels, currentChannelId, switchChannel } = this.props;
+        const { channels } = this.props;
         if (channels.length === 0) {
             return null;
         }
 
-        const renderedChannels = channels.map((channel) => {
-            const { name, id } = channel;
-            const classes = cn({
-                btn: true,
-                active: id === currentChannelId,
-                'nav-link': true,
-                'btn-block': true,
-                'shadow-none': true,
-            });
-            return (
-                <li key={id} className="nav-item">
-                    <button
-                        onClick={handleChannelSwitch({ id, switchChannel })}
-                        type="button"
-                        className={classes}>
-                        {name}
-                    </button>
-                    { this.showEditButtons(channel) }
-                </li>
-            );
-        });
+        const renderedChannels = channels.map((channel) => (
+            <li key={channel.id} className="nav-item">
+                {this.displayChannelButton(channel)}
+            </li>
+        ));
 
         return (
             <ul className="nav flex-column nav-pills nav-fill">
