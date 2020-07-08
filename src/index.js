@@ -18,64 +18,60 @@ import App from './components/App';
 import { reducers, actions } from './slices';
 import UserContext from './context';
 
-
-if (process.env.NODE_ENV !== 'production') {
-  localStorage.debug = 'chat:*';
-}
-
-console.log('it works!');
-console.log('gon', gon);
-
-const { channels, messages, currentChannelId } = gon;
-
-const preloadedState = {
-  channels,
-  messages,
-  currentChannelId,
-  formError: false,
-  modalError: false,
-  modalInfo: { channel: null, type: null },
-};
-const store = configureStore({ preloadedState, reducer: reducers });
-
-if (!cookies.get('username')) {
-  const newUsername = faker.internet.userName();
-  cookies.set('username', newUsername);
-}
-
-const socket = io();
-
-socket.on('newMessage', (data) => {
-  store.dispatch(actions.messages.addMessage(data));
-});
-
-socket.on('newChannel', (data) => {
-  store.dispatch(actions.channels.addChannel(data));
-});
-
-socket.on('removeChannel', (channel) => {
-  const { id } = channel.data;
-
-  store.dispatch(actions.channels.removeChannel(id));
-
-  const state = store.getState();
-  if (id === state.currentChannelId) {
-    const [lastChannel] = state.channels.slice(-1);
-    store.dispatch(actions.currentChannelId.switchChannel(lastChannel.id));
+const run = () => {
+  if (process.env.NODE_ENV !== 'production') {
+    localStorage.debug = 'chat:*';
   }
-});
 
-socket.on('renameChannel', (data) => {
-  store.dispatch(actions.channels.renameChannel(data));
-});
+  const { channels, messages, currentChannelId } = gon;
 
-const username = cookies.get('username');
-const node = document.querySelector('.container');
+  const preloadedState = {
+    channels,
+    messages,
+    currentChannelId,
+    formError: false,
+    modalError: false,
+    modalInfo: { channel: null, type: null },
+  };
+  const store = configureStore({ preloadedState, reducer: reducers });
 
-const run = (state, mountNode, user) => {
+  if (!cookies.get('username')) {
+    const newUsername = faker.internet.userName();
+    cookies.set('username', newUsername);
+  }
+
+  const socket = io();
+
+  socket.on('newMessage', (data) => {
+    store.dispatch(actions.messages.addMessage(data));
+  });
+
+  socket.on('newChannel', (data) => {
+    store.dispatch(actions.channels.addChannel(data));
+  });
+
+  socket.on('removeChannel', (channel) => {
+    const { id } = channel.data;
+
+    store.dispatch(actions.channels.removeChannel(id));
+
+    const state = store.getState();
+    if (id === state.currentChannelId) {
+      const [lastChannel] = state.channels.slice(-1);
+      store.dispatch(actions.currentChannelId.switchChannel(lastChannel.id));
+    }
+  });
+
+  socket.on('renameChannel', (data) => {
+    store.dispatch(actions.channels.renameChannel(data));
+  });
+
+  const username = cookies.get('username');
+  const mountNode = document.querySelector('.container');
+
   render(
-        <Provider store={state}>
-            <UserContext.Provider value={user}>
+        <Provider store={store}>
+            <UserContext.Provider value={username}>
                 <App />
             </UserContext.Provider>
         </Provider>,
@@ -83,4 +79,4 @@ const run = (state, mountNode, user) => {
   );
 };
 
-run(store, node, username);
+run();
