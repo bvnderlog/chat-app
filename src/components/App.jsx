@@ -11,11 +11,11 @@ import Channels from './Channels';
 const mapStateToProps = (state) => ({ modalInfo: state.modalInfo });
 
 const renderModal = (modalInfo) => {
-    if (!modalInfo.type) {
-        return null;
-    }
-    const Modal = getModal(modalInfo.type);
-    return <Modal />;
+  if (!modalInfo.type) {
+    return null;
+  }
+  const Modal = getModal(modalInfo.type);
+  return <Modal />;
 };
 
 const App = (props) => (

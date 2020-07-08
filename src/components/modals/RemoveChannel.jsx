@@ -10,47 +10,47 @@ import InvalidFeedback from '../InvalidFeedback';
 
 
 const actionMakers = {
-    hideModal: actions.modalInfo.hideModal,
-    setHasError: actions.modalError.setHasError,
-    setModalInfo: actions.modalInfo.setModalInfo,
-    removeChannel: actions.channels.removeChannel,
+  hideModal: actions.modalInfo.hideModal,
+  setHasError: actions.modalError.setHasError,
+  setModalInfo: actions.modalInfo.setModalInfo,
+  removeChannel: actions.channels.removeChannel,
 };
 
 const mapStateToProps = (state) => {
-    const { modalInfo, modalError } = state;
-    return { modalInfo, modalError };
+  const { modalInfo, modalError } = state;
+  return { modalInfo, modalError };
 };
 
 const onSubmit = (props) => async (event) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    const {
-        setHasError,
-        hideModal,
-        channelId,
-        modalError,
-    } = props;
-    const url = routes.channelPath(channelId);
+  const {
+    setHasError,
+    hideModal,
+    channelId,
+    modalError,
+  } = props;
+  const url = routes.channelPath(channelId);
 
-    try {
-        await axios.delete(url);
-    } catch (error) {
-        setHasError(true);
-        return;
-    }
+  try {
+    await axios.delete(url);
+  } catch (error) {
+    setHasError(true);
+    return;
+  }
 
-    if (modalError) {
-        setHasError(false);
-    }
+  if (modalError) {
+    setHasError(false);
+  }
 
-    hideModal();
+  hideModal();
 };
 
 const RemoveChannel = (props) => {
-    const { modalInfo, hideModal, modalError } = props;
-    const submitData = { ...props, channelId: modalInfo.channel.id };
+  const { modalInfo, hideModal, modalError } = props;
+  const submitData = { ...props, channelId: modalInfo.channel.id };
 
-    return (
+  return (
         <Modal show={modalInfo.type === 'remove'} onHide={hideModal}>
             <Modal.Header closeButton onClick={hideModal}>
                 <Modal.Title>Remove</Modal.Title>
@@ -64,13 +64,13 @@ const RemoveChannel = (props) => {
                 </form>
             </Modal.Body>
         </Modal>
-    );
+  );
 };
 
 RemoveChannel.propTypes = {
-    hideModal: PropTypes.func,
-    modalError: PropTypes.bool,
-    modalInfo: PropTypes.object,
+  hideModal: PropTypes.func,
+  modalError: PropTypes.bool,
+  modalInfo: PropTypes.object,
 };
 
 export default connect(mapStateToProps, actionMakers)(RemoveChannel);

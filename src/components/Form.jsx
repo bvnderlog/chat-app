@@ -13,60 +13,60 @@ import InvalidFeedback from './InvalidFeedback';
 
 
 const mapStateToProps = (state) => {
-    const { currentChannelId, formError } = state;
-    return { currentChannelId, formError };
+  const { currentChannelId, formError } = state;
+  return { currentChannelId, formError };
 };
 
 const actionMakers = {
-    setHasError: actions.formError.setHasError,
+  setHasError: actions.formError.setHasError,
 };
 
 const handleSubmit = (props) => async (values, { setSubmitting, resetForm }) => {
-    setSubmitting(false);
+  setSubmitting(false);
 
-    const {
-        currentChannelId,
-        formError,
-        username,
-        setHasError,
-    } = props;
+  const {
+    currentChannelId,
+    formError,
+    username,
+    setHasError,
+  } = props;
 
-    const url = routes.channelMessagesPath(currentChannelId);
-    const data = {
-        attributes: {
-            channelId: currentChannelId,
-            content: values.body,
-            username,
-        },
-    };
+  const url = routes.channelMessagesPath(currentChannelId);
+  const data = {
+    attributes: {
+      channelId: currentChannelId,
+      content: values.body,
+      username,
+    },
+  };
 
-    try {
-        await axios.post(url, { data });
-    } catch (error) {
-        setHasError(true);
-        return;
-    }
+  try {
+    await axios.post(url, { data });
+  } catch (error) {
+    setHasError(true);
+    return;
+  }
 
-    resetForm();
-    if (formError) {
-        setHasError(false);
-    }
+  resetForm();
+  if (formError) {
+    setHasError(false);
+  }
 };
 
 const Form = (props) => {
-    const { formError } = props;
-    const username = useContext(UserContext);
-    const inputClasses = cn({
-        'form-control': true,
-        'is-invalid': formError,
-    });
+  const { formError } = props;
+  const username = useContext(UserContext);
+  const inputClasses = cn({
+    'form-control': true,
+    'is-invalid': formError,
+  });
 
-    const inputRef = useRef();
-    useEffect(() => {
-        inputRef.current.focus();
-    });
+  const inputRef = useRef();
+  useEffect(() => {
+    inputRef.current.focus();
+  });
 
-    return (
+  return (
         <Formik
             initialValues={{ body: '' }}
             onSubmit={handleSubmit({ ...props, username })}
@@ -80,7 +80,7 @@ const Form = (props) => {
                 </FormikForm>
             </div>
         </Formik>
-    );
+  );
 };
 
 Form.propTypes = { formError: PropTypes.bool };
