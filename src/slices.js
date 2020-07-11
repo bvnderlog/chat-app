@@ -1,11 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const modalErrorSlice = createSlice({
-  name: 'modalError',
-  initialState: false,
-  reducers: { setHasError: (state, action) => action.payload },
-});
-
 const currentChannelSlice = createSlice({
   name: 'currentChannel',
   initialState: 1,
@@ -59,7 +53,6 @@ const messagesSlice = createSlice({
 });
 
 const reducers = {
-  modalError: modalErrorSlice.reducer,
   messages: messagesSlice.reducer,
   channels: channelsSlice.reducer,
   modalInfo: modalInfoSlice.reducer,
@@ -67,7 +60,6 @@ const reducers = {
 };
 
 const actions = {
-  modalError: modalErrorSlice.actions,
   messages: messagesSlice.actions,
   channels: channelsSlice.actions,
   modalInfo: modalInfoSlice.actions,

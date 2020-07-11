@@ -2,6 +2,7 @@ import axios from 'axios';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Form, Formik } from 'formik';
 import { Modal, FormGroup } from 'react-bootstrap';
 
 import routes from '../../routes';
@@ -11,65 +12,60 @@ import InvalidFeedback from '../InvalidFeedback';
 
 const actionMakers = {
   hideModal: actions.modalInfo.hideModal,
-  setHasError: actions.modalError.setHasError,
   setModalInfo: actions.modalInfo.setModalInfo,
   removeChannel: actions.channels.removeChannel,
 };
 
 const mapStateToProps = (state) => {
-  const { modalInfo, modalError } = state;
-  return { modalInfo, modalError };
+  const { modalInfo } = state;
+  return { modalInfo };
 };
 
-const onSubmit = (props) => async (event) => {
-  event.preventDefault();
-
-  const {
-    setHasError,
-    hideModal,
-    channelId,
-    modalError,
-  } = props;
+const onSubmit = (props) => async (values, formActions) => {
+  const { hideModal, channelId } = props;
+  const { setSubmitting, setErrors } = formActions;
   const url = routes.channelPath(channelId);
 
   try {
     await axios.delete(url);
   } catch (error) {
-    setHasError(true);
+    setErrors({ body: 'Network error' });
     return;
   }
 
-  if (modalError) {
-    setHasError(false);
-  }
-
   hideModal();
+  setSubmitting(false);
 };
 
 const RemoveChannel = (props) => {
-  const { modalInfo, hideModal, modalError } = props;
+  const { modalInfo, hideModal } = props;
   const submitData = { ...props, channelId: modalInfo.channel.id };
+
+  const form = (
+    <Formik onSubmit={onSubmit(submitData)} initialValues={{}}>
+      {({ errors }) => (
+        <Form>
+          <FormGroup>
+            <input className="btn btn-danger" type="submit" value="remove" />
+            {<InvalidFeedback message={errors.body} />}
+          </FormGroup>
+        </Form>
+      )}
+    </Formik>
+  );
 
   return (
     <Modal show={modalInfo.type === 'remove'} onHide={hideModal}>
       <Modal.Header closeButton onClick={hideModal}>
         <Modal.Title>Remove</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <form onSubmit={onSubmit(submitData)}>
-          <FormGroup>
-            <input className="btn btn-danger" type="submit" value="remove" />
-            {modalError && <InvalidFeedback />}
-          </FormGroup>
-        </form>
-      </Modal.Body>
+      <Modal.Body>{form}</Modal.Body>
     </Modal>
   );
 };
 
 RemoveChannel.propTypes = {
   hideModal: PropTypes.func,
-  modalError: PropTypes.bool,
   modalInfo: PropTypes.object,
 };
 
