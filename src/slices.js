@@ -6,12 +6,6 @@ const modalErrorSlice = createSlice({
   reducers: { setHasError: (state, action) => action.payload },
 });
 
-const formErrorSlice = createSlice({
-  name: 'formError',
-  initialState: false,
-  reducers: { setHasError: (state, action) => action.payload },
-});
-
 const currentChannelSlice = createSlice({
   name: 'currentChannel',
   initialState: 1,
@@ -65,7 +59,6 @@ const messagesSlice = createSlice({
 });
 
 const reducers = {
-  formError: formErrorSlice.reducer,
   modalError: modalErrorSlice.reducer,
   messages: messagesSlice.reducer,
   channels: channelsSlice.reducer,
@@ -74,7 +67,6 @@ const reducers = {
 };
 
 const actions = {
-  formError: formErrorSlice.actions,
   modalError: modalErrorSlice.actions,
   messages: messagesSlice.actions,
   channels: channelsSlice.actions,

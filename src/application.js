@@ -29,7 +29,6 @@ export default () => {
     channels,
     messages,
     currentChannelId,
-    formError: false,
     modalError: false,
     modalInfo: { channel: null, type: null },
   };
