@@ -57,14 +57,13 @@ const Form = (props) => {
       onSubmit={handleSubmit({ ...props, username })}
     >
       {({ errors }) => {
-        const inputError = errors.body;
-        const inputClasses = cn({ 'form-control': true, 'is-invalid': inputError });
+        const inputClasses = cn({ 'form-control': true, 'is-invalid': errors.body });
         return (
           <div className="mt-auto">
             <FormikForm>
               <FormGroup>
                 <Field innerRef={inputRef} name="body" className={inputClasses} />
-                {<InvalidFeedback message={inputError} />}
+                {<InvalidFeedback message={errors.body} />}
               </FormGroup>
             </FormikForm>
           </div>

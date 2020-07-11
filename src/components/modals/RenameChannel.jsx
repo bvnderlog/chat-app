@@ -14,44 +14,34 @@ import InvalidFeedback from '../InvalidFeedback';
 const actionMakers = {
   hideModal: actions.modalInfo.hideModal,
   setModalInfo: actions.modalInfo.setModalInfo,
-  setHasError: actions.modalError.setHasError,
 };
 
 const mapStateToProps = (state) => {
-  const { modalInfo, modalError } = state;
-  return { modalInfo, modalError };
+  const { modalInfo } = state;
+  return { modalInfo };
 };
 
-const onSubmit = (props) => async (values, { setSubmitting, resetForm }) => {
-  setSubmitting(false);
+const onSubmit = (props) => async (values, formActions) => {
+  const { setSubmitting, resetForm, setErrors } = formActions;
 
-  const {
-    modalInfo,
-    setHasError,
-    hideModal,
-    modalError,
-  } = props;
+  const { modalInfo, hideModal } = props;
   const url = routes.channelPath(modalInfo.channel.id);
   const data = { attributes: { name: values.body } };
 
   try {
     await axios.patch(url, { data });
   } catch (error) {
-    setHasError(true);
+    setErrors({ body: 'Network error' });
     return;
   }
 
   resetForm();
-  if (modalError) {
-    setHasError(false);
-  }
-
   hideModal();
+  setSubmitting(false);
 };
 
 const RenameChannel = (props) => {
-  const { modalInfo, modalError, hideModal } = props;
-  const inputClasses = cn({ 'form-control': true, 'is-invalid': modalError });
+  const { modalInfo, hideModal } = props;
 
   const inputRef = useRef();
   useEffect(() => {
@@ -63,21 +53,28 @@ const RenameChannel = (props) => {
   const form = (
     <Formik
       initialValues={{ body: modalInfo.channel.name }}
+      validateOnChange={false}
+      validateOnBlur={false}
       onSubmit={onSubmit(props)}
     >
-      <Form>
-        <FormGroup>
-          <Field
-            innerRef={inputRef}
-            required
-            name="body"
-            className={inputClasses}
-            onFocus={handleFocus}
-          />
-          {modalError && <InvalidFeedback />}
-        </FormGroup>
-        <input type="submit" className="btn btn-primary" value="submit" />
-      </Form>
+      {({ errors }) => {
+        const inputClasses = cn({ 'form-control': true, 'is-invalid': errors.body });
+        return (
+          <Form>
+            <FormGroup>
+              <Field
+                innerRef={inputRef}
+                required
+                name="body"
+                className={inputClasses}
+                onFocus={handleFocus}
+              />
+              {<InvalidFeedback message={errors.body} />}
+            </FormGroup>
+            <input type="submit" className="btn btn-primary" value="submit" />
+          </Form>
+        );
+      }}
     </Formik>
   );
 
@@ -94,7 +91,6 @@ const RenameChannel = (props) => {
 RenameChannel.propTypes = {
   hideModal: PropTypes.func,
   setModalInfo: PropTypes.func,
-  modalError: PropTypes.bool,
   modalInfo: PropTypes.object,
 };
 
