@@ -61,33 +61,33 @@ const RenameChannel = (props) => {
   const handleFocus = () => inputRef.current.select();
 
   const form = (
-        <Formik
+    <Formik
             initialValues={{ body: modalInfo.channel.name }}
             onSubmit={onSubmit(props)}
         >
-            <Form>
-                <FormGroup>
-                    <Field
+      <Form>
+        <FormGroup>
+          <Field
                         innerRef={inputRef}
                         required
                         name="body"
                         className={inputClasses}
                         onFocus={handleFocus}
                     />
-                    { modalError && <InvalidFeedback />}
-                </FormGroup>
-                <input type="submit" className="btn btn-primary" value="submit" />
-            </Form>
-        </Formik>
+          { modalError && <InvalidFeedback />}
+        </FormGroup>
+        <input type="submit" className="btn btn-primary" value="submit" />
+      </Form>
+    </Formik>
   );
 
   return (
-        <Modal show={modalInfo.type === 'rename'} onHide={hideModal}>
-            <Modal.Header closeButton onClick={hideModal}>
-                <Modal.Title>Rename</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>{form}</Modal.Body>
-        </Modal>
+    <Modal show={modalInfo.type === 'rename'} onHide={hideModal}>
+      <Modal.Header closeButton onClick={hideModal}>
+        <Modal.Title>Rename</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>{form}</Modal.Body>
+    </Modal>
   );
 };
 

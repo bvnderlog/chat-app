@@ -57,26 +57,26 @@ const AddChannel = (props) => {
   });
 
   return (
-        <Modal show={modalInfo.type === 'add'} onHide={hideModal}>
-            <Modal.Header closeButton onHide={hideModal}>
-                <Modal.Title>Add</Modal.Title>
-            </Modal.Header>
+    <Modal show={modalInfo.type === 'add'} onHide={hideModal}>
+      <Modal.Header closeButton onHide={hideModal}>
+        <Modal.Title>Add</Modal.Title>
+      </Modal.Header>
 
-            <Modal.Body>
-                <Formik
+      <Modal.Body>
+        <Formik
                     initialValues={{ body: '' }}
                     onSubmit={onSubmit(props)}
                 >
-                    <Form>
-                        <FormGroup>
-                            <Field innerRef={inputRef} required name="body" className={inputClasses} />
-                            { modalError && <InvalidFeedback />}
-                        </FormGroup>
-                        <input type="submit" className="btn btn-primary" value="submit" />
-                    </Form>
-                </Formik>
-            </Modal.Body>
-        </Modal>
+          <Form>
+            <FormGroup>
+              <Field innerRef={inputRef} required name="body" className={inputClasses} />
+              { modalError && <InvalidFeedback />}
+            </FormGroup>
+            <input type="submit" className="btn btn-primary" value="submit" />
+          </Form>
+        </Formik>
+      </Modal.Body>
+    </Modal>
   );
 };
 

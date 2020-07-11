@@ -67,19 +67,19 @@ const Form = (props) => {
   });
 
   return (
-        <Formik
+    <Formik
             initialValues={{ body: '' }}
             onSubmit={handleSubmit({ ...props, username })}
         >
-            <div className="mt-auto">
-                <FormikForm>
-                    <FormGroup>
-                        <Field innerRef={inputRef} name="body" className={inputClasses} />
-                        { formError && <InvalidFeedback />}
-                    </FormGroup>
-                </FormikForm>
-            </div>
-        </Formik>
+      <div className="mt-auto">
+        <FormikForm>
+          <FormGroup>
+            <Field innerRef={inputRef} name="body" className={inputClasses} />
+            { formError && <InvalidFeedback />}
+          </FormGroup>
+        </FormikForm>
+      </div>
+    </Formik>
   );
 };
 

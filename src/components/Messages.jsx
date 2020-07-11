@@ -16,12 +16,12 @@ const Messages = (props) => {
   useEffect(() => scrollAnchor.current.scrollIntoView({ behavior: 'smooth' }));
 
   return (
-        <div id="messages-box" className="chat-messages overflow-auto mb-3">
-            {props.messages.map((item) => (
-                <div key={item.id}><b>{item.username}</b>: {item.content}</div>
-            ))}
-            <div ref={scrollAnchor} />
-        </div>
+    <div id="messages-box" className="chat-messages overflow-auto mb-3">
+      {props.messages.map((item) => (
+        <div key={item.id}><b>{item.username}</b>: {item.content}</div>
+      ))}
+      <div ref={scrollAnchor} />
+    </div>
   );
 };
 

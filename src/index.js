@@ -70,12 +70,12 @@ const run = () => {
   const mountNode = document.querySelector('.container');
 
   render(
-        <Provider store={store}>
-            <UserContext.Provider value={username}>
-                <App />
-            </UserContext.Provider>
-        </Provider>,
-        mountNode,
+    <Provider store={store}>
+      <UserContext.Provider value={username}>
+        <App />
+      </UserContext.Provider>
+    </Provider>,
+    mountNode,
   );
 };
 

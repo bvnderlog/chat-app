@@ -41,11 +41,11 @@ class Channels extends React.Component {
       'shadow-none': true,
     });
     const channelButton = (
-            <button
+      <button
                 onClick={handleChannelSwitch({ id, switchChannel })}
                 type="button"
                 className={channelButtonClasses}>{name}
-            </button>
+      </button>
     );
 
     if (!removable) {
@@ -53,20 +53,20 @@ class Channels extends React.Component {
     }
 
     return (
-            <ButtonGroup style={{ width: '100%' }}>
-                {channelButton}
-                <DropdownButton
+      <ButtonGroup style={{ width: '100%' }}>
+        {channelButton}
+        <DropdownButton
                     as={ButtonGroup}
                     variant={id === currentChannelId ? 'primary' : 'link' }
                 >
-                    <Dropdown.Item
+          <Dropdown.Item
                         onClick={handleChannelRemove({ channel, setModalInfo })}
                     >Remove</Dropdown.Item>
-                    <Dropdown.Item
+          <Dropdown.Item
                         onClick={handleChannelRename({ channel, setModalInfo })}
                     >Rename</Dropdown.Item>
-                </DropdownButton>
-            </ButtonGroup>
+        </DropdownButton>
+      </ButtonGroup>
     );
   }
 
@@ -77,31 +77,31 @@ class Channels extends React.Component {
     }
 
     const renderedChannels = channels.map((channel) => (
-            <li key={channel.id} className="nav-item">
-                {this.displayChannelButton(channel)}
-            </li>
+      <li key={channel.id} className="nav-item">
+        {this.displayChannelButton(channel)}
+      </li>
     ));
 
     return (
-            <ul className="nav flex-column nav-pills nav-fill">
-                {renderedChannels}
-            </ul>
+      <ul className="nav flex-column nav-pills nav-fill">
+        {renderedChannels}
+      </ul>
     );
   }
 
   render() {
     const { setModalInfo } = this.props;
     return (
-            <>
-                <div className="d-flex mb-2">
-                    <span>Channels</span>
-                    <button
+      <>
+        <div className="d-flex mb-2">
+          <span>Channels</span>
+          <button
                         onClick={handleChannelAdd(setModalInfo)}
                         className="btn btn-link p-0 ml-auto"
                     >+</button>
-                </div>
-                {this.renderChannels()}
-            </>
+        </div>
+        {this.renderChannels()}
+      </>
     );
   }
 }

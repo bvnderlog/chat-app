@@ -51,19 +51,19 @@ const RemoveChannel = (props) => {
   const submitData = { ...props, channelId: modalInfo.channel.id };
 
   return (
-        <Modal show={modalInfo.type === 'remove'} onHide={hideModal}>
-            <Modal.Header closeButton onClick={hideModal}>
-                <Modal.Title>Remove</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <form onSubmit={onSubmit(submitData)}>
-                    <FormGroup>
-                        <input className="btn btn-danger" type="submit" value="remove" />
-                        { modalError && <InvalidFeedback />}
-                    </FormGroup>
-                </form>
-            </Modal.Body>
-        </Modal>
+    <Modal show={modalInfo.type === 'remove'} onHide={hideModal}>
+      <Modal.Header closeButton onClick={hideModal}>
+        <Modal.Title>Remove</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <form onSubmit={onSubmit(submitData)}>
+          <FormGroup>
+            <input className="btn btn-danger" type="submit" value="remove" />
+            { modalError && <InvalidFeedback />}
+          </FormGroup>
+        </form>
+      </Modal.Body>
+    </Modal>
   );
 };
 
