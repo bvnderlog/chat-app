@@ -68,9 +68,9 @@ const Form = (props) => {
 
   return (
     <Formik
-            initialValues={{ body: '' }}
-            onSubmit={handleSubmit({ ...props, username })}
-        >
+      initialValues={{ body: '' }}
+      onSubmit={handleSubmit({ ...props, username })}
+    >
       <div className="mt-auto">
         <FormikForm>
           <FormGroup>

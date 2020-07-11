@@ -64,9 +64,9 @@ const AddChannel = (props) => {
 
       <Modal.Body>
         <Formik
-                    initialValues={{ body: '' }}
-                    onSubmit={onSubmit(props)}
-                >
+          initialValues={{ body: '' }}
+          onSubmit={onSubmit(props)}
+        >
           <Form>
             <FormGroup>
               <Field innerRef={inputRef} required name="body" className={inputClasses} />

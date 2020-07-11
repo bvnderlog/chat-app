@@ -42,9 +42,9 @@ class Channels extends React.Component {
     });
     const channelButton = (
       <button
-                onClick={handleChannelSwitch({ id, switchChannel })}
-                type="button"
-                className={channelButtonClasses}>{name}
+        onClick={handleChannelSwitch({ id, switchChannel })}
+        type="button"
+        className={channelButtonClasses}>{name}
       </button>
     );
 
@@ -56,15 +56,15 @@ class Channels extends React.Component {
       <ButtonGroup style={{ width: '100%' }}>
         {channelButton}
         <DropdownButton
-                    as={ButtonGroup}
-                    variant={id === currentChannelId ? 'primary' : 'link' }
-                >
+          as={ButtonGroup}
+          variant={id === currentChannelId ? 'primary' : 'link' }
+        >
           <Dropdown.Item
-                        onClick={handleChannelRemove({ channel, setModalInfo })}
-                    >Remove</Dropdown.Item>
+            onClick={handleChannelRemove({ channel, setModalInfo })}
+          >Remove</Dropdown.Item>
           <Dropdown.Item
-                        onClick={handleChannelRename({ channel, setModalInfo })}
-                    >Rename</Dropdown.Item>
+            onClick={handleChannelRename({ channel, setModalInfo })}
+          >Rename</Dropdown.Item>
         </DropdownButton>
       </ButtonGroup>
     );
@@ -96,9 +96,9 @@ class Channels extends React.Component {
         <div className="d-flex mb-2">
           <span>Channels</span>
           <button
-                        onClick={handleChannelAdd(setModalInfo)}
-                        className="btn btn-link p-0 ml-auto"
-                    >+</button>
+            onClick={handleChannelAdd(setModalInfo)}
+            className="btn btn-link p-0 ml-auto"
+          >+</button>
         </div>
         {this.renderChannels()}
       </>

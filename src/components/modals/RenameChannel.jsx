@@ -62,18 +62,18 @@ const RenameChannel = (props) => {
 
   const form = (
     <Formik
-            initialValues={{ body: modalInfo.channel.name }}
-            onSubmit={onSubmit(props)}
-        >
+      initialValues={{ body: modalInfo.channel.name }}
+      onSubmit={onSubmit(props)}
+    >
       <Form>
         <FormGroup>
           <Field
-                        innerRef={inputRef}
-                        required
-                        name="body"
-                        className={inputClasses}
-                        onFocus={handleFocus}
-                    />
+            innerRef={inputRef}
+            required
+            name="body"
+            className={inputClasses}
+            onFocus={handleFocus}
+          />
           { modalError && <InvalidFeedback />}
         </FormGroup>
         <input type="submit" className="btn btn-primary" value="submit" />
