@@ -74,7 +74,7 @@ const RenameChannel = (props) => {
             className={inputClasses}
             onFocus={handleFocus}
           />
-          { modalError && <InvalidFeedback />}
+          {modalError && <InvalidFeedback />}
         </FormGroup>
         <input type="submit" className="btn btn-primary" value="submit" />
       </Form>

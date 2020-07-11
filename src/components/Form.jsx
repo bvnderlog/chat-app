@@ -75,7 +75,7 @@ const Form = (props) => {
         <FormikForm>
           <FormGroup>
             <Field innerRef={inputRef} name="body" className={inputClasses} />
-            { formError && <InvalidFeedback />}
+            {formError && <InvalidFeedback />}
           </FormGroup>
         </FormikForm>
       </div>

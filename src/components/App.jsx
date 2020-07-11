@@ -33,7 +33,7 @@ const App = (props) => (
         </div>
       </div>
     </div>
-    { renderModal(props.modalInfo) }
+    {renderModal(props.modalInfo)}
   </>
 );
 

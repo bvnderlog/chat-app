@@ -59,7 +59,7 @@ const RemoveChannel = (props) => {
         <form onSubmit={onSubmit(submitData)}>
           <FormGroup>
             <input className="btn btn-danger" type="submit" value="remove" />
-            { modalError && <InvalidFeedback />}
+            {modalError && <InvalidFeedback />}
           </FormGroup>
         </form>
       </Modal.Body>

@@ -57,7 +57,7 @@ class Channels extends React.Component {
         {channelButton}
         <DropdownButton
           as={ButtonGroup}
-          variant={id === currentChannelId ? 'primary' : 'link' }
+          variant={id === currentChannelId ? 'primary' : 'link'}
         >
           <Dropdown.Item
             onClick={handleChannelRemove({ channel, setModalInfo })}

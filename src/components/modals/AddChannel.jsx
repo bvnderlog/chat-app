@@ -70,7 +70,7 @@ const AddChannel = (props) => {
           <Form>
             <FormGroup>
               <Field innerRef={inputRef} required name="body" className={inputClasses} />
-              { modalError && <InvalidFeedback />}
+              {modalError && <InvalidFeedback />}
             </FormGroup>
             <input type="submit" className="btn btn-primary" value="submit" />
           </Form>
