@@ -29,14 +29,12 @@ const onSubmit = (props) => async (values, formActions) => {
 
   try {
     await axios.post(url, { data });
+    resetForm();
+    props.hideModal();
+    setSubmitting(false);
   } catch (error) {
     setErrors({ body: 'Network error' });
-    return;
   }
-
-  resetForm();
-  props.hideModal();
-  setSubmitting(false);
 };
 
 const AddChannel = (props) => {

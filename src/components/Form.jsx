@@ -31,13 +31,11 @@ const handleSubmit = (props) => async (values, actions) => {
 
   try {
     await axios.post(url, { data });
+    resetForm();
+    setSubmitting(false);
   } catch (error) {
-    setErrors({ body: 'Network error' });
-    return;
+    setErrors({ body: error.message });
   }
-
-  resetForm();
-  setSubmitting(false);
 };
 
 const Form = (props) => {

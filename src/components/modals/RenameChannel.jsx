@@ -30,14 +30,12 @@ const onSubmit = (props) => async (values, formActions) => {
 
   try {
     await axios.patch(url, { data });
+    resetForm();
+    hideModal();
+    setSubmitting(false);
   } catch (error) {
-    setErrors({ body: 'Network error' });
-    return;
+    setErrors({ body: error.message });
   }
-
-  resetForm();
-  hideModal();
-  setSubmitting(false);
 };
 
 const RenameChannel = (props) => {

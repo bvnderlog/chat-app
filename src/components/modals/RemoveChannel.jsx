@@ -28,13 +28,11 @@ const onSubmit = (props) => async (values, formActions) => {
 
   try {
     await axios.delete(url);
+    hideModal();
+    setSubmitting(false);
   } catch (error) {
     setErrors({ body: 'Network error' });
-    return;
   }
-
-  hideModal();
-  setSubmitting(false);
 };
 
 const RemoveChannel = (props) => {
