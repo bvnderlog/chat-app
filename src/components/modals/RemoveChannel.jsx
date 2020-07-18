@@ -31,7 +31,7 @@ const onSubmit = (props) => async (values, formActions) => {
     hideModal();
     setSubmitting(false);
   } catch (error) {
-    setErrors({ body: 'Network error' });
+    setErrors({ body: error.message });
   }
 };
 
