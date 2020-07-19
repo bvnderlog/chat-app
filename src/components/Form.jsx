@@ -1,6 +1,6 @@
 import axios from 'axios';
 import cn from 'classnames';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { FormGroup } from 'react-bootstrap';
 import { Formik, Form as FormikForm, Field } from 'formik';
 import React, { useContext, useRef, useEffect } from 'react';
@@ -9,11 +9,6 @@ import routes from '../routes';
 import UserContext from '../context';
 import InvalidFeedback from './InvalidFeedback';
 
-
-const mapStateToProps = (state) => {
-  const { currentChannelId } = state;
-  return { currentChannelId };
-};
 
 const handleSubmit = (props) => async (values, actions) => {
   const { setSubmitting, resetForm, setErrors } = actions;
@@ -38,8 +33,9 @@ const handleSubmit = (props) => async (values, actions) => {
   }
 };
 
-const Form = (props) => {
+const Form = () => {
   const username = useContext(UserContext);
+  const currentChannelId = useSelector((state) => state.currentChannelId);
 
   const inputRef = useRef();
   useEffect(() => {
@@ -52,7 +48,7 @@ const Form = (props) => {
       initialValues={{ body: '' }}
       validateOnChange={false}
       validateOnBlur={false}
-      onSubmit={handleSubmit({ ...props, username })}
+      onSubmit={handleSubmit({ currentChannelId, username })}
     >
       {({ errors }) => {
         const inputClasses = cn({ 'form-control': true, 'is-invalid': errors.body });
@@ -71,4 +67,4 @@ const Form = (props) => {
   );
 };
 
-export default connect(mapStateToProps)(Form);
+export default Form;

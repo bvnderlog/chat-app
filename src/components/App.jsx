@@ -1,14 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import Form from './Form';
 import getModal from './modals';
 import Messages from './Messages';
 import Channels from './Channels';
 
-
-const mapStateToProps = (state) => ({ modalInfo: state.modalInfo });
 
 const renderModal = (modalInfo) => {
   if (!modalInfo.type) {
@@ -18,25 +16,28 @@ const renderModal = (modalInfo) => {
   return <Modal />;
 };
 
-const App = (props) => (
-  <>
-    <div className="h-100" id="chat">
-      <div className="row h-100 pb-3">
-        <div className="col-3 border-right">
-          <Channels />
-        </div>
-        <div className="col h-100">
-          <div className="d-flex flex-column h-100">
-            <Messages />
-            <Form />
+const App = () => {
+  const modalInfo = useSelector((state) => state.modalInfo);
+  return (
+    <>
+      <div className="h-100" id="chat">
+        <div className="row h-100 pb-3">
+          <div className="col-3 border-right">
+            <Channels />
+          </div>
+          <div className="col h-100">
+            <div className="d-flex flex-column h-100">
+              <Messages />
+              <Form />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    {renderModal(props.modalInfo)}
-  </>
-);
+      {renderModal(modalInfo)}
+    </>
+  );
+};
 
 App.propTypes = { modalInfo: PropTypes.object };
 
-export default connect(mapStateToProps)(App);
+export default App;
