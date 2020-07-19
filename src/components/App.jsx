@@ -16,8 +16,10 @@ const renderModal = (modalInfo) => {
   return <Modal />;
 };
 
+const getModalInfo = (state) => state.modalInfo;
+
 const App = () => {
-  const modalInfo = useSelector((state) => state.modalInfo);
+  const modalInfo = useSelector(getModalInfo);
   return (
     <>
       <div className="h-100" id="chat">

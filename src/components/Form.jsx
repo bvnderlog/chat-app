@@ -33,9 +33,11 @@ const handleSubmit = (props) => async (values, actions) => {
   }
 };
 
+const getCurrentChannelId = (state) => state.currentChannelId;
+
 const Form = () => {
   const username = useContext(UserContext);
-  const currentChannelId = useSelector((state) => state.currentChannelId);
+  const currentChannelId = useSelector(getCurrentChannelId);
 
   const inputRef = useRef();
   useEffect(() => {
