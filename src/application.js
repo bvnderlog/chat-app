@@ -51,14 +51,10 @@ export default () => {
 
   socket.on('removeChannel', (channel) => {
     const { id } = channel.data;
-
-    store.dispatch(actions.channels.removeChannel(id));
-
     const state = store.getState();
-    if (id === state.currentChannelId) {
-      const [lastChannel] = state.channels.slice(-1);
-      store.dispatch(actions.currentChannelId.switchChannel(lastChannel.id));
-    }
+    const [firstChannel] = state.channels;
+    const actionPayload = { removedChannelId: id, nextChannelId: firstChannel.id };
+    store.dispatch(actions.channels.removeChannel(actionPayload));
   });
 
   socket.on('renameChannel', (data) => {
