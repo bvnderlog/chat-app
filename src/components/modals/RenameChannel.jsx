@@ -9,7 +9,6 @@ import routes from '../../routes';
 import { actions } from '../../slices';
 import InvalidFeedback from '../InvalidFeedback';
 
-
 const onSubmit = (props) => async (values, formActions) => {
   const { setSubmitting, resetForm, setErrors } = formActions;
 

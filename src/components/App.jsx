@@ -6,7 +6,6 @@ import getModal from './modals';
 import Messages from './Messages';
 import Channels from './Channels';
 
-
 const renderModal = (modalInfo) => {
   if (!modalInfo.type) {
     return null;

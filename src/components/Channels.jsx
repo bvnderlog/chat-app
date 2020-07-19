@@ -5,7 +5,6 @@ import { ButtonGroup, Dropdown, DropdownButton } from 'react-bootstrap';
 
 import { actions } from '../slices';
 
-
 const mapStateToProps = (state) => {
   const { channels, currentChannelId } = state;
   return { channels, currentChannelId };

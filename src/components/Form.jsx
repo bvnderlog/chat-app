@@ -9,7 +9,6 @@ import routes from '../routes';
 import UserContext from '../context';
 import InvalidFeedback from './InvalidFeedback';
 
-
 const handleSubmit = (props) => async (values, actions) => {
   const { setSubmitting, resetForm, setErrors } = actions;
 
