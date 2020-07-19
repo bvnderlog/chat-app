@@ -25,6 +25,32 @@ const onSubmit = (hideModal) => async (values, formActions) => {
   }
 };
 
+const renderForm = (props) => {
+  const { hideModal, inputRef } = props;
+  return (
+    <Formik
+      initialValues={{ body: '' }}
+      onSubmit={onSubmit(hideModal)}
+    >
+      {({ errors }) => {
+        const inputClasses = cn({
+          'form-control': true,
+          'is-invalid': errors.body,
+        });
+        return (
+          <Form>
+            <FormGroup>
+              <Field innerRef={inputRef} required name="body" className={inputClasses} />
+              {<InvalidFeedback message={errors.body} />}
+            </FormGroup>
+            <input type="submit" className="btn btn-primary" value="submit" />
+          </Form>
+        );
+      }}
+    </Formik>
+  );
+};
+
 const getModalInfo = (state) => state.modalInfo;
 
 const AddChannel = () => {
@@ -38,36 +64,13 @@ const AddChannel = () => {
     inputRef.current.focus();
   });
 
+  const formRenderProps = { inputRef, hideModal };
   return (
     <Modal show={modalInfo.type === 'add'} onHide={hideModal}>
       <Modal.Header closeButton onHide={hideModal}>
         <Modal.Title>Add</Modal.Title>
       </Modal.Header>
-
-      <Modal.Body>
-        <Formik
-          initialValues={{ body: '' }}
-          validateOnChange={false}
-          validateOnBlur={false}
-          onSubmit={onSubmit(hideModal)}
-        >
-          {({ errors }) => {
-            const inputClasses = cn({
-              'form-control': true,
-              'is-invalid': errors.body,
-            });
-            return (
-              <Form>
-                <FormGroup>
-                  <Field innerRef={inputRef} required name="body" className={inputClasses} />
-                  {<InvalidFeedback message={errors.body} />}
-                </FormGroup>
-                <input type="submit" className="btn btn-primary" value="submit" />
-              </Form>
-            );
-          }}
-        </Formik>
-      </Modal.Body>
+    <Modal.Body>{renderForm(formRenderProps)}</Modal.Body>
     </Modal>
   );
 };
