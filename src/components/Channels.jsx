@@ -27,17 +27,30 @@ const handleChannelRename = (props) => () => props.setModalInfo(
 
 @connect(mapStateToProps, actionMakers)
 class Channels extends React.Component {
-  displayChannelButton(channel) {
-    const { currentChannelId, switchChannel, setModalInfo } = this.props;
+  renderDropdown(channel) {
+    const { currentChannelId, setModalInfo } = this.props;
+    return (
+      <DropdownButton
+        as={ButtonGroup}
+        variant={channel.id === currentChannelId ? 'primary' : 'link'}
+        title={''}
+      >
+        <Dropdown.Item
+          onClick={handleChannelRemove({ channel, setModalInfo })}
+        >Remove</Dropdown.Item>
+        <Dropdown.Item
+          onClick={handleChannelRename({ channel, setModalInfo })}
+        >Rename</Dropdown.Item>
+      </DropdownButton>
+    );
+  }
+
+  renderChannelButton(channel) {
+    const { currentChannelId, switchChannel } = this.props;
     const { id, name, removable } = channel;
 
-    const channelButtonClasses = cn({
-      btn: true,
-      active: id === currentChannelId,
-      'nav-link': true,
-      'btn-block': true,
-      'shadow-none': true,
-    });
+    const commonAttrs = { 'nav-link': true, 'btn-block': true, 'shadow-none': true };
+    const channelButtonClasses = cn({ ...commonAttrs, btn: true, active: id === currentChannelId });
     const channelButton = (
       <button
         onClick={handleChannelSwitch({ id, switchChannel })}
@@ -53,18 +66,7 @@ class Channels extends React.Component {
     return (
       <ButtonGroup style={{ width: '100%' }}>
         {channelButton}
-        <DropdownButton
-          as={ButtonGroup}
-          variant={id === currentChannelId ? 'primary' : 'link'}
-          title={''}
-        >
-          <Dropdown.Item
-            onClick={handleChannelRemove({ channel, setModalInfo })}
-          >Remove</Dropdown.Item>
-          <Dropdown.Item
-            onClick={handleChannelRename({ channel, setModalInfo })}
-          >Rename</Dropdown.Item>
-        </DropdownButton>
+        {this.renderDropdown(channel)}
       </ButtonGroup>
     );
   }
@@ -77,7 +79,7 @@ class Channels extends React.Component {
 
     const renderedChannels = channels.map((channel) => (
       <li key={channel.id} className="nav-item">
-        {this.displayChannelButton(channel)}
+        {this.renderChannelButton(channel)}
       </li>
     ));
 
