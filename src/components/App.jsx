@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import Form from './Form';
@@ -39,7 +38,5 @@ const App = () => {
     </>
   );
 };
-
-App.propTypes = { modalInfo: PropTypes.object };
 
 export default App;

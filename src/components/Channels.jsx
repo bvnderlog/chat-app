@@ -1,6 +1,5 @@
 import React from 'react';
 import cn from 'classnames';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ButtonGroup, Dropdown, DropdownButton } from 'react-bootstrap';
 
@@ -106,12 +105,5 @@ class Channels extends React.Component {
     );
   }
 }
-
-Channels.propTypes = {
-  channels: PropTypes.array,
-  currentChannelId: PropTypes.number,
-  switchChannel: PropTypes.func,
-  setModalInfo: PropTypes.func,
-};
 
 export default Channels;

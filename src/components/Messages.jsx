@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import React, { useRef, useEffect } from 'react';
 
@@ -25,7 +24,5 @@ const Messages = () => {
     </div>
   );
 };
-
-Messages.propTypes = { messages: PropTypes.array };
 
 export default Messages;

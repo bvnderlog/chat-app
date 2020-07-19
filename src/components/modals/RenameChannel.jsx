@@ -1,25 +1,14 @@
 import axios from 'axios';
 import cn from 'classnames';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Form, Field, Formik } from 'formik';
 import React, { useRef, useEffect } from 'react';
 import { Modal, FormGroup } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
 
 import routes from '../../routes';
 import { actions } from '../../slices';
 import InvalidFeedback from '../InvalidFeedback';
 
-
-const actionMakers = {
-  hideModal: actions.modalInfo.hideModal,
-  setModalInfo: actions.modalInfo.setModalInfo,
-};
-
-const mapStateToProps = (state) => {
-  const { modalInfo } = state;
-  return { modalInfo };
-};
 
 const onSubmit = (props) => async (values, formActions) => {
   const { setSubmitting, resetForm, setErrors } = formActions;
@@ -38,8 +27,13 @@ const onSubmit = (props) => async (values, formActions) => {
   }
 };
 
-const RenameChannel = (props) => {
-  const { modalInfo, hideModal } = props;
+const getModalInfo = (state) => state.modalInfo;
+
+const RenameChannel = () => {
+  const dispatch = useDispatch();
+  const hideModal = () => dispatch(actions.modalInfo.hideModal());
+
+  const modalInfo = useSelector(getModalInfo);
 
   const inputRef = useRef();
   useEffect(() => {
@@ -53,7 +47,7 @@ const RenameChannel = (props) => {
       initialValues={{ body: modalInfo.channel.name }}
       validateOnChange={false}
       validateOnBlur={false}
-      onSubmit={onSubmit(props)}
+      onSubmit={onSubmit({ hideModal, modalInfo })}
     >
       {({ errors }) => {
         const inputClasses = cn({ 'form-control': true, 'is-invalid': errors.body });
@@ -86,10 +80,4 @@ const RenameChannel = (props) => {
   );
 };
 
-RenameChannel.propTypes = {
-  hideModal: PropTypes.func,
-  setModalInfo: PropTypes.func,
-  modalInfo: PropTypes.object,
-};
-
-export default connect(mapStateToProps, actionMakers)(RenameChannel);
+export default RenameChannel;

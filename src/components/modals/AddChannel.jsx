@@ -1,27 +1,16 @@
 import axios from 'axios';
 import cn from 'classnames';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Form, Field, Formik } from 'formik';
 import React, { useRef, useEffect } from 'react';
 import { Modal, FormGroup } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
 
 import routes from '../../routes';
 import { actions } from '../../slices';
 import InvalidFeedback from '../InvalidFeedback';
 
 
-const actionMakers = {
-  hideModal: actions.modalInfo.hideModal,
-  setModalInfo: actions.modalInfo.setModalInfo,
-};
-
-const mapStateToProps = (state) => {
-  const { modalInfo } = state;
-  return { modalInfo };
-};
-
-const onSubmit = (props) => async (values, formActions) => {
+const onSubmit = (hideModal) => async (values, formActions) => {
   const { setSubmitting, resetForm, setErrors } = formActions;
 
   const url = routes.channelsPath();
@@ -30,15 +19,20 @@ const onSubmit = (props) => async (values, formActions) => {
   try {
     await axios.post(url, { data });
     resetForm();
-    props.hideModal();
+    hideModal();
     setSubmitting(false);
   } catch (error) {
     setErrors({ body: error.message });
   }
 };
 
-const AddChannel = (props) => {
-  const { hideModal, modalInfo } = props;
+const getModalInfo = (state) => state.modalInfo;
+
+const AddChannel = () => {
+  const dispatch = useDispatch();
+  const hideModal = () => dispatch(actions.modalInfo.hideModal());
+
+  const modalInfo = useSelector(getModalInfo);
 
   const inputRef = useRef();
   useEffect(() => {
@@ -56,7 +50,7 @@ const AddChannel = (props) => {
           initialValues={{ body: '' }}
           validateOnChange={false}
           validateOnBlur={false}
-          onSubmit={onSubmit(props)}
+          onSubmit={onSubmit(hideModal)}
         >
           {({ errors }) => {
             const inputClasses = cn({
@@ -79,10 +73,4 @@ const AddChannel = (props) => {
   );
 };
 
-AddChannel.propTypes = {
-  hideModal: PropTypes.func,
-  setModalInfo: PropTypes.func,
-  modalInfo: PropTypes.object,
-};
-
-export default connect(mapStateToProps, actionMakers)(AddChannel);
+export default AddChannel;

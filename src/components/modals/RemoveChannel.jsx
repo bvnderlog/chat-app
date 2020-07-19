@@ -1,25 +1,13 @@
 import axios from 'axios';
 import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
 import { Modal, FormGroup } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
 
 import routes from '../../routes';
 import { actions } from '../../slices';
 import InvalidFeedback from '../InvalidFeedback';
 
-
-const actionMakers = {
-  hideModal: actions.modalInfo.hideModal,
-  setModalInfo: actions.modalInfo.setModalInfo,
-  removeChannel: actions.channels.removeChannel,
-};
-
-const mapStateToProps = (state) => {
-  const { modalInfo } = state;
-  return { modalInfo };
-};
 
 const onSubmit = (props) => async (values, formActions) => {
   const { hideModal, channelId } = props;
@@ -35,9 +23,14 @@ const onSubmit = (props) => async (values, formActions) => {
   }
 };
 
-const RemoveChannel = (props) => {
-  const { modalInfo, hideModal } = props;
-  const submitData = { ...props, channelId: modalInfo.channel.id };
+const getModalInfo = (state) => state.modalInfo;
+
+const RemoveChannel = () => {
+  const dispatch = useDispatch();
+  const hideModal = () => dispatch(actions.modalInfo.hideModal());
+
+  const modalInfo = useSelector(getModalInfo);
+  const submitData = { hideModal, channelId: modalInfo.channel.id };
 
   const form = (
     <Formik onSubmit={onSubmit(submitData)} initialValues={{}}>
@@ -62,9 +55,4 @@ const RemoveChannel = (props) => {
   );
 };
 
-RemoveChannel.propTypes = {
-  hideModal: PropTypes.func,
-  modalInfo: PropTypes.object,
-};
-
-export default connect(mapStateToProps, actionMakers)(RemoveChannel);
+export default RemoveChannel;
