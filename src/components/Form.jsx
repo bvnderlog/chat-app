@@ -58,7 +58,7 @@ const Form = () => {
           <div className="mt-auto">
             <FormikForm>
               <FormGroup>
-                <Field innerRef={inputRef} name="body" className={inputClasses} />
+                <Field innerRef={inputRef} required name="body" className={inputClasses} />
                 {<InvalidFeedback message={errors.body} />}
               </FormGroup>
             </FormikForm>
