@@ -28,6 +28,31 @@ const onSubmit = (props) => async (values, formActions) => {
 
 const getModalInfo = (state) => state.modalInfo;
 
+const renderForm = (props) => {
+  const { modalInfo, hideModal, inputRef } = props;
+  const handleFocus = () => inputRef.current.select();
+  return (
+    <Formik
+      initialValues={{ body: modalInfo.channel.name }}
+      onSubmit={onSubmit({ hideModal, modalInfo })}
+    >
+      {({ errors }) => {
+        const inputClasses = cn({ 'form-control': true, 'is-invalid': errors.body });
+        const fieldAttrs = { innerRef: inputRef, required: true, name: 'body' };
+        return (
+          <Form>
+            <FormGroup>
+              <Field {...fieldAttrs} className={inputClasses} onFocus={handleFocus}/>
+              {<InvalidFeedback message={errors.body} />}
+            </FormGroup>
+            <input type="submit" className="btn btn-primary" value="submit" />
+          </Form>
+        );
+      }}
+    </Formik>
+  );
+};
+
 const RenameChannel = () => {
   const dispatch = useDispatch();
   const hideModal = () => dispatch(actions.modalInfo.hideModal());
@@ -39,42 +64,13 @@ const RenameChannel = () => {
     inputRef.current.focus();
   });
 
-  const handleFocus = () => inputRef.current.select();
-
-  const form = (
-    <Formik
-      initialValues={{ body: modalInfo.channel.name }}
-      validateOnChange={false}
-      validateOnBlur={false}
-      onSubmit={onSubmit({ hideModal, modalInfo })}
-    >
-      {({ errors }) => {
-        const inputClasses = cn({ 'form-control': true, 'is-invalid': errors.body });
-        return (
-          <Form>
-            <FormGroup>
-              <Field
-                innerRef={inputRef}
-                required
-                name="body"
-                className={inputClasses}
-                onFocus={handleFocus}
-              />
-              {<InvalidFeedback message={errors.body} />}
-            </FormGroup>
-            <input type="submit" className="btn btn-primary" value="submit" />
-          </Form>
-        );
-      }}
-    </Formik>
-  );
-
+  const formRenderProps = { inputRef, modalInfo, hideModal };
   return (
     <Modal show={modalInfo.type === 'rename'} onHide={hideModal}>
       <Modal.Header closeButton onClick={hideModal}>
         <Modal.Title>Rename</Modal.Title>
       </Modal.Header>
-      <Modal.Body>{form}</Modal.Body>
+      <Modal.Body>{renderForm(formRenderProps)}</Modal.Body>
     </Modal>
   );
 };
