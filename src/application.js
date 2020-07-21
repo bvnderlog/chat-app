@@ -26,10 +26,9 @@ export default () => {
   const { channels, messages, currentChannelId } = gon;
 
   const preloadedState = {
-    channels,
     messages,
-    currentChannelId,
     modalInfo: { channel: null, type: null },
+    channels: { all: channels, currentChannelId },
   };
 
   const store = configureStore({ preloadedState, reducer: reducers });
@@ -51,10 +50,7 @@ export default () => {
 
   socket.on('removeChannel', (channel) => {
     const { id } = channel.data;
-    const state = store.getState();
-    const [firstChannel] = state.channels;
-    const actionPayload = { removedChannelId: id, nextChannelId: firstChannel.id };
-    store.dispatch(actions.channels.removeChannel(actionPayload));
+    store.dispatch(actions.channels.removeChannel(id));
   });
 
   socket.on('renameChannel', (data) => {

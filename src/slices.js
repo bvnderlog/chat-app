@@ -2,36 +2,32 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const channelsSlice = createSlice({
   name: 'channels',
-  initialState: [],
+  initialState: { all: [], currentChannelId: 1 },
   reducers: {
     addChannel(state, action) {
       const channelData = action.payload.data.attributes;
-      state.push(channelData);
+      const updatedChannels = [...state.all, channelData];
+      return { all: updatedChannels, currentChannelId: channelData.id };
     },
     removeChannel(state, action) {
-      const { removedChannelId } = action.payload;
-      return state.filter((channel) => channel.id !== removedChannelId);
+      const removedChannelId = action.payload;
+      const filteredChannels = state.all.filter(
+        (channel) => channel.id !== removedChannelId,
+      );
+      const [firstChannel] = filteredChannels;
+      const nextChannelId = (
+        state.currentChannelId === removedChannelId
+          ? firstChannel.id : state.currentChannelId
+      );
+      return { all: filteredChannels, currentChannelId: nextChannelId };
     },
     renameChannel(state, action) {
       const { id, name } = action.payload.data.attributes;
-      const channel = state.find((item) => item.id === id);
+      const channel = state.all.find((item) => item.id === id);
       channel.name = name;
     },
-  },
-});
-
-const currentChannelSlice = createSlice({
-  name: 'currentChannel',
-  initialState: 1,
-  reducers: { switchChannel: (state, action) => action.payload },
-  extraReducers: {
-    [channelsSlice.actions.addChannel]: (state, action) => {
-      const { id } = action.payload.data.attributes;
-      return id;
-    },
-    [channelsSlice.actions.removeChannel]: (state, action) => {
-      const { removedChannelId, nextChannelId } = action.payload;
-      return state === removedChannelId ? nextChannelId : state;
+    switchCurrentChannel(state, action) {
+      return { ...state, currentChannelId: action.payload };
     },
   },
 });
@@ -66,14 +62,12 @@ const reducers = {
   messages: messagesSlice.reducer,
   channels: channelsSlice.reducer,
   modalInfo: modalInfoSlice.reducer,
-  currentChannelId: currentChannelSlice.reducer,
 };
 
 const actions = {
   messages: messagesSlice.actions,
   channels: channelsSlice.actions,
   modalInfo: modalInfoSlice.actions,
-  currentChannelId: currentChannelSlice.actions,
 };
 
 export { reducers, actions };
