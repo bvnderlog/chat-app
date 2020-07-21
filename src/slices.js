@@ -14,10 +14,10 @@ const channelsSlice = createSlice({
       const filteredChannels = state.all.filter(
         (channel) => channel.id !== removedChannelId,
       );
-      const [firstChannel] = filteredChannels;
+      const [lastChannel] = filteredChannels.slice(-1);
       const nextChannelId = (
         state.currentChannelId === removedChannelId
-          ? firstChannel.id : state.currentChannelId
+          ? lastChannel.id : state.currentChannelId
       );
       return { all: filteredChannels, currentChannelId: nextChannelId };
     },

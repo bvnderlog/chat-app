@@ -53,8 +53,12 @@ class Channels extends React.Component {
 
     const { id, name, removable } = channel;
 
-    const commonAttrs = { 'nav-link': true, 'btn-block': true, 'shadow-none': true };
-    const channelButtonClasses = cn({ ...commonAttrs, btn: true, active: id === currentChannelId });
+    const commonAttrs = {
+      'nav-link': true, 'btn-block': true, 'shadow-none': true,
+    };
+    const channelButtonClasses = cn(
+      { ...commonAttrs, btn: true, active: id === currentChannelId },
+    );
     const channelButton = (
       <button
         onClick={handleChannelSwitch({ id, switchCurrentChannel })}
