@@ -32,7 +32,7 @@ const handleSubmit = (props) => async (values, actions) => {
   }
 };
 
-const getCurrentChannelId = (state) => state.channels.currentChannelId;
+const getCurrentChannelId = (state) => state.channelsInfo.currentChannelId;
 
 const Form = () => {
   const username = useContext(UserContext);

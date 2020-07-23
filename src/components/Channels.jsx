@@ -6,12 +6,12 @@ import { ButtonGroup, Dropdown, DropdownButton } from 'react-bootstrap';
 import { actions } from '../slices';
 
 const mapStateToProps = (state) => {
-  const { channels } = state;
-  return { channels };
+  const { channelsInfo } = state;
+  return { channelsInfo };
 };
 
 const actionMakers = {
-  switchCurrentChannel: actions.channels.switchCurrentChannel,
+  switchCurrentChannel: actions.channelsInfo.switchCurrentChannel,
   hideModal: actions.modalInfo.hideModal,
   setModalInfo: actions.modalInfo.setModalInfo,
 };
@@ -28,8 +28,8 @@ const handleChannelRename = (props) => () => props.setModalInfo(
 @connect(mapStateToProps, actionMakers)
 class Channels extends React.Component {
   renderDropdown(channel) {
-    const { channels, setModalInfo } = this.props;
-    const { currentChannelId } = channels;
+    const { channelsInfo, setModalInfo } = this.props;
+    const { currentChannelId } = channelsInfo;
 
     return (
       <DropdownButton
@@ -48,8 +48,8 @@ class Channels extends React.Component {
   }
 
   renderChannelButton(channel) {
-    const { channels, switchCurrentChannel } = this.props;
-    const { currentChannelId } = channels;
+    const { channelsInfo, switchCurrentChannel } = this.props;
+    const { currentChannelId } = channelsInfo;
 
     const { id, name, removable } = channel;
 
@@ -80,12 +80,9 @@ class Channels extends React.Component {
   }
 
   renderChannels() {
-    const { channels } = this.props;
-    if (channels.all.length === 0) {
-      return null;
-    }
+    const { channelsInfo: { channels } } = this.props;
 
-    const renderedChannels = channels.all.map((channel) => (
+    const renderedChannels = channels.map((channel) => (
       <li key={channel.id} className="nav-item">
         {this.renderChannelButton(channel)}
       </li>

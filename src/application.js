@@ -15,8 +15,8 @@ import io from 'socket.io-client';
 import { configureStore } from '@reduxjs/toolkit';
 
 import App from './components/App';
-import { reducers, actions } from './slices';
 import UserContext from './context';
+import { reducers, actions } from './slices';
 
 export default () => {
   if (process.env.NODE_ENV !== 'production') {
@@ -28,7 +28,7 @@ export default () => {
   const preloadedState = {
     messages,
     modalInfo: { channel: null, type: null },
-    channels: { all: channels, currentChannelId },
+    channelsInfo: { channels, currentChannelId },
   };
 
   const store = configureStore({ preloadedState, reducer: reducers });
@@ -45,16 +45,16 @@ export default () => {
   });
 
   socket.on('newChannel', (data) => {
-    store.dispatch(actions.channels.addChannel(data));
+    store.dispatch(actions.channelsInfo.addChannel(data));
   });
 
   socket.on('removeChannel', (channel) => {
     const { id } = channel.data;
-    store.dispatch(actions.channels.removeChannel(id));
+    store.dispatch(actions.channelsInfo.removeChannel(id));
   });
 
   socket.on('renameChannel', (data) => {
-    store.dispatch(actions.channels.renameChannel(data));
+    store.dispatch(actions.channelsInfo.renameChannel(data));
   });
 
   const username = cookies.get('username');

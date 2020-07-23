@@ -1,17 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const channelsSlice = createSlice({
-  name: 'channels',
-  initialState: { all: [], currentChannelId: 1 },
+const channelsInfoSlice = createSlice({
+  name: 'channelsInfo',
+  initialState: { channels: [], currentChannelId: 1 },
   reducers: {
     addChannel(state, action) {
       const channelData = action.payload.data.attributes;
-      const updatedChannels = [...state.all, channelData];
-      return { all: updatedChannels, currentChannelId: channelData.id };
+      const updatedChannels = [...state.channels, channelData];
+      return { channels: updatedChannels, currentChannelId: channelData.id };
     },
     removeChannel(state, action) {
       const removedChannelId = action.payload;
-      const filteredChannels = state.all.filter(
+      const filteredChannels = state.channels.filter(
         (channel) => channel.id !== removedChannelId,
       );
       const [lastChannel] = filteredChannels.slice(-1);
@@ -19,11 +19,11 @@ const channelsSlice = createSlice({
         state.currentChannelId === removedChannelId
           ? lastChannel.id : state.currentChannelId
       );
-      return { all: filteredChannels, currentChannelId: nextChannelId };
+      return { channels: filteredChannels, currentChannelId: nextChannelId };
     },
     renameChannel(state, action) {
       const { id, name } = action.payload.data.attributes;
-      const channel = state.all.find((item) => item.id === id);
+      const channel = state.channels.find((item) => item.id === id);
       channel.name = name;
     },
     switchCurrentChannel(state, action) {
@@ -42,7 +42,7 @@ const messagesSlice = createSlice({
     },
   },
   extraReducers: {
-    [channelsSlice.actions.removeChannel]: (state, action) => {
+    [channelsInfoSlice.actions.removeChannel]: (state, action) => {
       const id = action.payload;
       return state.filter((message) => message.channelId !== id);
     },
@@ -60,13 +60,13 @@ const modalInfoSlice = createSlice({
 
 const reducers = {
   messages: messagesSlice.reducer,
-  channels: channelsSlice.reducer,
+  channelsInfo: channelsInfoSlice.reducer,
   modalInfo: modalInfoSlice.reducer,
 };
 
 const actions = {
   messages: messagesSlice.actions,
-  channels: channelsSlice.actions,
+  channelsInfo: channelsInfoSlice.actions,
   modalInfo: modalInfoSlice.actions,
 };
 
